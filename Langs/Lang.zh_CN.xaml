@@ -1,0 +1,454 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!-- 导航栏 -->
+    <sys:String x:Key="NavLaunch">启动</sys:String>
+    <sys:String x:Key="NavDownload">下载</sys:String>
+    <sys:String x:Key="NavSettings">设置</sys:String>
+    <sys:String x:Key="NavMore">更多</sys:String>
+    <sys:String x:Key="NavExit">退出</sys:String>
+    <sys:String x:Key="NavCollapse">收起</sys:String>
+
+    <!-- 页面标题 -->
+    <sys:String x:Key="PageLaunch">启动</sys:String>
+    <sys:String x:Key="PageDownload">下载</sys:String>
+    <sys:String x:Key="PageDownloadCenter">下载中心</sys:String>
+    <sys:String x:Key="PageSettings">设置</sys:String>
+    <sys:String x:Key="PageMore">更多</sys:String>
+
+    <!-- 启动页 -->
+    <sys:String x:Key="LaunchPlayer">玩家</sys:String>
+    <sys:String x:Key="LaunchMemory">内存</sys:String>
+    <sys:String x:Key="LaunchNoVersionSelected">未选择版本</sys:String>
+    <sys:String x:Key="LaunchStart">启动</sys:String>
+
+    <!-- 下载页 -->
+    <sys:String x:Key="DownloadSearch">搜索</sys:String>
+    <sys:String x:Key="DownloadTarget">目标版本</sys:String>
+    <sys:String x:Key="DownloadNotSelected">未选择</sys:String>
+    <sys:String x:Key="DownloadStart">开始下载</sys:String>
+    <sys:String x:Key="DownloadManagement">版本管理</sys:String>
+
+    <!-- 资源类型 -->
+    <sys:String x:Key="ResTypeGame">游戏</sys:String>
+    <sys:String x:Key="ResTypeMod">模组</sys:String>
+    <sys:String x:Key="ResTypeShader">光影</sys:String>
+    <sys:String x:Key="ResTypeMaterial">材质</sys:String>
+
+    <!-- 版本分类 -->
+    <sys:String x:Key="CatAll">全部</sys:String>
+    <sys:String x:Key="CatRelease">正式版</sys:String>
+    <sys:String x:Key="CatSnapshot">快照</sys:String>
+    <sys:String x:Key="CatOld">远古</sys:String>
+    <sys:String x:Key="CatAprilFool">愚人节</sys:String>
+
+    <!-- 下载状态/进度 -->
+    <sys:String x:Key="DlVersionManifest">正在获取版本清单</sys:String>
+    <sys:String x:Key="DlCancelled">已取消下载</sys:String>
+    <sys:String x:Key="DlDownloading">正在下载 {0}</sys:String>
+    <sys:String x:Key="DlDownloadingFile">正在下载文件</sys:String>
+    <sys:String x:Key="DlComplete">下载完成</sys:String>
+    <sys:String x:Key="DlFailed">下载失败: {0}</sys:String>
+    <sys:String x:Key="DlClient">正在下载客户端</sys:String>
+    <sys:String x:Key="DlClientProgress">下载客户端 {0:F1} MB / {1:F1} MB</sys:String>
+    <sys:String x:Key="DlLibraries">正在下载库文件</sys:String>
+    <sys:String x:Key="DlLibrariesProgress">下载库文件 {0}/{1}</sys:String>
+    <sys:String x:Key="DlLibrariesProgressFailed">下载库文件 {0}/{1} (失败 {2})</sys:String>
+    <sys:String x:Key="DlAssets">正在下载资源文件</sys:String>
+    <sys:String x:Key="DlAssetsProgress">下载资源文件 {0}/{1}</sys:String>
+    <sys:String x:Key="DlAssetsProgressFailed">下载资源文件 {0}/{1} (失败 {2})</sys:String>
+    <sys:String x:Key="DlModLoader">正在下载 {0}</sys:String>
+    <sys:String x:Key="DlLoaderInstalled">{0} 安装完成</sys:String>
+    <sys:String x:Key="DlBaseVersionExists">已存在基础版本: {0}</sys:String>
+    <sys:String x:Key="DlRetrying">重试下载 {0} 个失败文件</sys:String>
+    <sys:String x:Key="DlForgeInstalling">正在安装 {0}</sys:String>
+    <sys:String x:Key="DlForgePreDownload">预下载 Forge 库文件 {0}/{1}</sys:String>
+    <sys:String x:Key="DlForgeRuntimeLibs">下载 Forge 运行时库 {0}/{1}</sys:String>
+    <sys:String x:Key="DlForgeRuntimeLibsFailed">下载 Forge 运行时库 {0}/{1} (失败 {2})</sys:String>
+    <sys:String x:Key="DlStatusDownloading">下载中</sys:String>
+    <sys:String x:Key="DlStatusCompleted">已完成</sys:String>
+    <sys:String x:Key="DlStatusFailed">失败</sys:String>
+    <sys:String x:Key="DlStatusCancelled">已取消</sys:String>
+
+    <!-- 错误信息 -->
+    <sys:String x:Key="ErrVersionNotFound">未找到版本: {0}</sys:String>
+    <sys:String x:Key="ErrNoClientUrl">未找到客户端下载地址</sys:String>
+    <sys:String x:Key="ErrNoJava">未找到 Java 运行时，请先安装 Java</sys:String>
+    <sys:String x:Key="ErrLibrariesFailed">库文件下载失败，共 {0} 个文件未能下载</sys:String>
+    <sys:String x:Key="ErrAssetsFailed">资源文件下载失败，共 {0} 个文件未能下载</sys:String>
+    <sys:String x:Key="ErrLoaderNotFound">未找到 {0} 适用于版本 {1} 的加载器</sys:String>
+    <sys:String x:Key="ErrLoaderDownloadFail">{0} 下载失败，已尝试 {1} 个镜像，最后错误: {2}</sys:String>
+    <sys:String x:Key="ErrInstallerFail">{0} 安装器执行失败，退出码 {1}，详情: {2}</sys:String>
+    <sys:String x:Key="ErrInstallerNoOutput">安装器未输出任何信息</sys:String>
+    <sys:String x:Key="ErrNoDownloadableFile">未找到可下载的文件</sys:String>
+    <sys:String x:Key="ErrNoFile">文件不存在</sys:String>
+    <sys:String x:Key="ErrLogTitle">==== 错误日志 {0} ====</sys:String>
+    <sys:String x:Key="ErrLogVersion">版本: {0}</sys:String>
+    <sys:String x:Key="ErrLogPlayer">玩家: {0}</sys:String>
+    <sys:String x:Key="ErrLogMaxRam">最大内存: {0} MB</sys:String>
+    <sys:String x:Key="ErrLogForceCheck">强制校验: {0}</sys:String>
+    <sys:String x:Key="ErrLogGameDir">游戏目录: {0}</sys:String>
+    <sys:String x:Key="ErrLogExceptionType">异常类型: {0}</sys:String>
+    <sys:String x:Key="ErrLogExceptionMsg">异常信息: {0}</sys:String>
+    <sys:String x:Key="ErrLogInnerExceptionType">内部异常类型: {0}</sys:String>
+    <sys:String x:Key="ErrLogInnerExceptionMsg">内部异常信息: {0}</sys:String>
+    <sys:String x:Key="ErrLogStackTrace">堆栈跟踪:</sys:String>
+    <sys:String x:Key="ErrLogInnerStackTrace">内部异常堆栈:</sys:String>
+
+    <!-- 启动日志 -->
+    <sys:String x:Key="LogAlreadyLaunching">正在启动中，请勿重复操作</sys:String>
+    <sys:String x:Key="LogLaunchVersion">启动版本: {0}</sys:String>
+    <sys:String x:Key="LogPlayer">玩家: {0}</sys:String>
+    <sys:String x:Key="LogMaxRam">最大内存: {0} MB</sys:String>
+    <sys:String x:Key="LogForceCheck">强制校验文件: {0}</sys:String>
+    <sys:String x:Key="LogIsolationDir">隔离目录: {0}</sys:String>
+    <sys:String x:Key="LogBaseJarCheckFail">基础 jar 校验失败: {0}</sys:String>
+    <sys:String x:Key="LogVerifyFile">校验文件: {0}</sys:String>
+    <sys:String x:Key="LogDownloadFile">下载文件: {0}</sys:String>
+    <sys:String x:Key="LogPatchRetry">第 {0}/{1} 次尝试补齐文件</sys:String>
+    <sys:String x:Key="LogNetworkRetry">网络错误，第 {0} 次重试: {1}</sys:String>
+    <sys:String x:Key="LogSkipFileCheckNote">已跳过文件校验，直接启动</sys:String>
+    <sys:String x:Key="LogQuickBuildFail">快速构建失败，切换到完整校验: {0}</sys:String>
+    <sys:String x:Key="LogProcessExitCode">进程退出码: {0}</sys:String>
+    <sys:String x:Key="LogProcessImmediateExit">进程立即退出</sys:String>
+    <sys:String x:Key="LogGameOutput">游戏输出 (最后 {0} 行):&#x0A;{1}</sys:String>
+    <sys:String x:Key="LogLaunchSuccess">启动成功，进程 ID: {0}</sys:String>
+    <sys:String x:Key="LogLaunchFail">启动失败: {0}</sys:String>
+    <sys:String x:Key="LogStack">堆栈: {0}</sys:String>
+    <sys:String x:Key="LogSkinSteve">使用 Steve 皮肤</sys:String>
+    <sys:String x:Key="LogSkinAlex">使用 Alex 皮肤</sys:String>
+    <sys:String x:Key="LogSkinPremium">使用正版皮肤: {0}</sys:String>
+    <sys:String x:Key="LogGotPremiumUuid">获取到正版 UUID: {0}</sys:String>
+    <sys:String x:Key="LogPremiumUuidFail">获取正版 UUID 失败，使用离线 UUID</sys:String>
+    <sys:String x:Key="LogSkinSetupFail">皮肤设置失败: {0}</sys:String>
+
+    <!-- 启动进度 -->
+    <sys:String x:Key="ProgressInit">初始化</sys:String>
+    <sys:String x:Key="ProgressInitMsg">正在初始化启动环境</sys:String>
+    <sys:String x:Key="ProgressCheckDeps">检查依赖</sys:String>
+    <sys:String x:Key="ProgressCheckDepsMsg">正在检查游戏依赖</sys:String>
+    <sys:String x:Key="ProgressCheckFiles">检查文件</sys:String>
+    <sys:String x:Key="ProgressCheckFilesMsg">正在检查游戏文件完整性</sys:String>
+    <sys:String x:Key="ProgressPatchFiles">补齐文件</sys:String>
+    <sys:String x:Key="ProgressPatchFilesMsg">正在补齐缺失的文件</sys:String>
+    <sys:String x:Key="ProgressBuildProcess">构建进程</sys:String>
+    <sys:String x:Key="ProgressBuildProcessMsg">正在构建启动进程</sys:String>
+    <sys:String x:Key="ProgressSkipCheckMsg">跳过文件检查，快速启动</sys:String>
+    <sys:String x:Key="ProgressLaunching">启动中</sys:String>
+    <sys:String x:Key="ProgressLaunchingMsg">正在启动游戏</sys:String>
+    <sys:String x:Key="ProgressVerifying">验证中</sys:String>
+    <sys:String x:Key="ProgressVerifyingMsg">正在验证游戏进程</sys:String>
+    <sys:String x:Key="ProgressDone">完成</sys:String>
+    <sys:String x:Key="ProgressDoneMsg">启动完成</sys:String>
+
+    <!-- 消息提示 -->
+    <sys:String x:Key="MsgUpdateFound">发现新版本: {0}</sys:String>
+    <sys:String x:Key="MsgAlreadyLatest">已是最新版本</sys:String>
+    <sys:String x:Key="MsgCheckUpdateFailed">检查更新失败</sys:String>
+    <sys:String x:Key="MsgCacheCleared">缓存已清除</sys:String>
+    <sys:String x:Key="MsgClearCacheFailed">清除缓存失败</sys:String>
+    <sys:String x:Key="MsgBackgroundRefreshed">背景已刷新</sys:String>
+    <sys:String x:Key="MsgMusicRefreshed">音乐已刷新</sys:String>
+    <sys:String x:Key="MsgEnterPlayerName">请输入玩家名称</sys:String>
+    <sys:String x:Key="MsgInvalidRam">内存大小无效</sys:String>
+    <sys:String x:Key="MsgSelectVersion">请先选择版本</sys:String>
+    <sys:String x:Key="MsgNoRuntimeDir">运行时目录不存在</sys:String>
+    <sys:String x:Key="MsgOpenDirFailed">打开目录失败</sys:String>
+    <sys:String x:Key="MsgOpenConfigFailed">打开配置文件失败</sys:String>
+    <sys:String x:Key="MsgSettingsReset">设置已重置</sys:String>
+
+    <!-- 更多页面 -->
+    <sys:String x:Key="MoreAbout">关于</sys:String>
+    <sys:String x:Key="MoreLauncherName">启动器名称</sys:String>
+    <sys:String x:Key="MoreVersion">版本</sys:String>
+    <sys:String x:Key="MoreRuntime">运行时</sys:String>
+    <sys:String x:Key="MoreCheckUpdate">检查更新</sys:String>
+    <sys:String x:Key="MoreClearCache">清除缓存</sys:String>
+    <sys:String x:Key="MoreOpenGameDir">打开游戏目录</sys:String>
+    <sys:String x:Key="MoreOpenJavaDir">打开 Java 目录</sys:String>
+    <sys:String x:Key="MoreProjectUrl">项目地址</sys:String>
+    <sys:String x:Key="MoreQuickActions">快捷操作</sys:String>
+    <sys:String x:Key="MoreChangelog">更新日志</sys:String>
+    <sys:String x:Key="MoreCredits">致谢</sys:String>
+    <sys:String x:Key="ChangelogContent">- 优化启动性能&#x0A;- 修复版本设置面板&#x0A;- 改进下载重试机制&#x0A;- 支持多模组加载器</sys:String>
+    <sys:String x:Key="CreditsContent">感谢所有开源项目的贡献</sys:String>
+
+    <!-- 通用 -->
+    <sys:String x:Key="CommonRefresh">刷新</sys:String>
+    <sys:String x:Key="CommonOpenFolder">打开文件夹</sys:String>
+    <sys:String x:Key="CommonDoubleClick">双击打开设置</sys:String>
+
+    <!-- 镜像源 -->
+    <sys:String x:Key="MirrorOfficialName">官方源</sys:String>
+    <sys:String x:Key="MirrorOfficialDesc">Mojang 官方服务器</sys:String>
+    <sys:String x:Key="MirrorGithubName">GitHub 源</sys:String>
+    <sys:String x:Key="MirrorGithubDesc">GitHub 镜像</sys:String>
+    <sys:String x:Key="MirrorCustomName">自定义源</sys:String>
+    <sys:String x:Key="MirrorCustomDesc">自定义下载源</sys:String>
+
+    <!-- 资源中心 -->
+    <sys:String x:Key="ResLoadingRecommend">加载推荐中</sys:String>
+    <sys:String x:Key="ResSearching">搜索中</sys:String>
+    <sys:String x:Key="ResLoadFailed">加载失败: {0}</sys:String>
+    <sys:String x:Key="ResNoRecommend">暂无推荐</sys:String>
+    <sys:String x:Key="ResNoResult">未找到 "{0}" 相关结果</sys:String>
+    <sys:String x:Key="ResNoDesc">暂无描述</sys:String>
+    <sys:String x:Key="ResTypeRelease">正式版</sys:String>
+    <sys:String x:Key="ResTypeSnapshot">快照版</sys:String>
+    <sys:String x:Key="ResVersionCount">共 {0} 个版本</sys:String>
+    <sys:String x:Key="ResLoaderAny">任意</sys:String>
+    <sys:String x:Key="ResMissingJar">缺少 jar 文件</sys:String>
+    <sys:String x:Key="ResSpeedUnlimited">不限速</sys:String>
+    <sys:String x:Key="ResSpeedValue">{0} KB/s</sys:String>
+
+    <!-- 版本设置 -->
+    <sys:String x:Key="VerSettingsTitle">版本设置</sys:String>
+    <sys:String x:Key="VerSettingsBack">返回</sys:String>
+    <sys:String x:Key="VerSettingsDisplayName">显示名称</sys:String>
+    <sys:String x:Key="VerSettingsMemory">内存分配</sys:String>
+    <sys:String x:Key="VerSettingsMemGlobal">跟随全局</sys:String>
+    <sys:String x:Key="VerSettingsMemCustom">独立设置</sys:String>
+    <sys:String x:Key="VerSettingsJvmArgs">JVM 参数</sys:String>
+    <sys:String x:Key="VerSettingsJvmArgsHint">留空则使用全局设置</sys:String>
+    <sys:String x:Key="VerSettingsGameArgs">游戏参数</sys:String>
+    <sys:String x:Key="VerSettingsGameArgsHint">附加的游戏启动参数</sys:String>
+    <sys:String x:Key="VerSettingsOpenFolder">打开版本文件夹</sys:String>
+    <sys:String x:Key="VerSettingsOpenFolderFail">打开文件夹失败</sys:String>
+    <sys:String x:Key="VerSettingsMods">模组管理</sys:String>
+    <sys:String x:Key="VerSettingsModsHint">拖入 .jar 文件安装模组</sys:String>
+    <sys:String x:Key="VerSettingsModsDrop">将 .jar 文件拖到此处安装</sys:String>
+    <sys:String x:Key="VerSettingsModInstalled">已安装模组: {0}</sys:String>
+    <sys:String x:Key="VerSettingsModRemoved">已移除模组: {0}</sys:String>
+    <sys:String x:Key="VerSettingsSave">保存</sys:String>
+    <sys:String x:Key="VerSettingsSaved">设置已保存</sys:String>
+
+    <!-- 设置页 - 基础 -->
+    <sys:String x:Key="SettingsBasic">基础</sys:String>
+    <sys:String x:Key="SettingsOpacity">不透明度</sys:String>
+    <sys:String x:Key="SettingsHue">色调</sys:String>
+    <sys:String x:Key="SettingsSaturation">饱和度</sys:String>
+    <sys:String x:Key="SettingsLightness">亮度</sys:String>
+    <sys:String x:Key="SettingsHueDelta">色调偏移</sys:String>
+    <sys:String x:Key="SettingsTheme">主题</sys:String>
+    <sys:String x:Key="SettingsLanguage">语言</sys:String>
+    <sys:String x:Key="SettingsShowLogo">显示 Logo</sys:String>
+    <sys:String x:Key="SettingsAutoSave">设置自动保存</sys:String>
+
+    <!-- 设置页 - 启动选项 -->
+    <sys:String x:Key="SettingsLaunchOptions">启动选项</sys:String>
+    <sys:String x:Key="SettingsVersionIsolation">版本隔离</sys:String>
+    <sys:String x:Key="SettingsWindowTitle">窗口标题</sys:String>
+    <sys:String x:Key="SettingsCustomInfo">自定义信息</sys:String>
+    <sys:String x:Key="SettingsLauncherVisibility">启动器可见性</sys:String>
+    <sys:String x:Key="SettingsProcessPriority">进程优先级</sys:String>
+    <sys:String x:Key="SettingsWindowSize">窗口大小</sys:String>
+
+    <!-- 设置页 - 内存 -->
+    <sys:String x:Key="SettingsMemoryAllocation">内存分配</sys:String>
+    <sys:String x:Key="SettingsOptimizeMemory">优化内存分配</sys:String>
+
+    <!-- 设置页 - 皮肤 -->
+    <sys:String x:Key="SettingsSkin">皮肤</sys:String>
+
+    <!-- 设置页 - 高级 -->
+    <sys:String x:Key="SettingsAdvanced">高级</sys:String>
+    <sys:String x:Key="SettingsJavaArgs">Java 参数</sys:String>
+    <sys:String x:Key="SettingsGameArgs">游戏参数</sys:String>
+    <sys:String x:Key="SettingsPreLaunch">启动前执行</sys:String>
+    <sys:String x:Key="SettingsWaitPreLaunch">等待启动前命令完成</sys:String>
+    <sys:String x:Key="SettingsGcType">垃圾回收器</sys:String>
+    <sys:String x:Key="SettingsDisableJlw">禁用 Java Launcher Wrapper</sys:String>
+    <sys:String x:Key="SettingsDisableLua">禁用 Lua 脚本</sys:String>
+    <sys:String x:Key="SettingsHighPerfGpu">使用高性能 GPU</sys:String>
+
+    <!-- 设置页 - 背景 -->
+    <sys:String x:Key="SettingsBackground">背景</sys:String>
+    <sys:String x:Key="SettingsBackgroundFit">背景适应方式</sys:String>
+    <sys:String x:Key="SettingsBackgroundBlur">背景模糊</sys:String>
+    <sys:String x:Key="SettingsColorfulBackground">彩色背景</sys:String>
+    <sys:String x:Key="SettingsRefreshBackground">刷新背景</sys:String>
+
+    <!-- 设置页 - 音乐 -->
+    <sys:String x:Key="SettingsMusic">音乐</sys:String>
+    <sys:String x:Key="SettingsMusicVolume">音乐音量</sys:String>
+    <sys:String x:Key="SettingsMusicRandom">随机播放</sys:String>
+    <sys:String x:Key="SettingsMusicAuto">自动播放</sys:String>
+    <sys:String x:Key="SettingsMusicStart">启动时播放</sys:String>
+    <sys:String x:Key="SettingsMusicStop">游戏时停止</sys:String>
+    <sys:String x:Key="SettingsRefreshMusic">刷新音乐</sys:String>
+
+    <!-- 设置页 - 标题栏 -->
+    <sys:String x:Key="SettingsTitlebar">标题栏</sys:String>
+    <sys:String x:Key="SettingsTitlebarStyle">标题栏样式</sys:String>
+    <sys:String x:Key="SettingsEnableAnimation">启用动画</sys:String>
+    <sys:String x:Key="SettingsAnimationSpeed">动画速度</sys:String>
+
+    <!-- 设置页 - 联机 -->
+    <sys:String x:Key="SettingsLink">联机</sys:String>
+    <sys:String x:Key="SettingsLinkMode">联机模式</sys:String>
+    <sys:String x:Key="SettingsLinkPort">端口</sys:String>
+    <sys:String x:Key="SettingsLinkMaxPlayers">最大玩家数</sys:String>
+    <sys:String x:Key="SettingsLinkAdvanced">高级联机设置</sys:String>
+    <sys:String x:Key="SettingsCustomPeer">自定义节点</sys:String>
+    <sys:String x:Key="SettingsRoomSettings">房间设置</sys:String>
+    <sys:String x:Key="SettingsWhitelist">白名单</sys:String>
+    <sys:String x:Key="SettingsAllowSpectator">允许旁观</sys:String>
+    <sys:String x:Key="SettingsAutoKick">自动踢出</sys:String>
+
+    <!-- 设置页 - 网络优化 -->
+    <sys:String x:Key="SettingsNetworkOpt">网络优化</sys:String>
+    <sys:String x:Key="SettingsHeartbeat">心跳间隔</sys:String>
+    <sys:String x:Key="SettingsTimeout">超时时间</sys:String>
+    <sys:String x:Key="SettingsUpnp">启用 UPnP</sys:String>
+    <sys:String x:Key="SettingsCompress">启用压缩</sys:String>
+    <sys:String x:Key="SettingsEncrypt">启用加密</sys:String>
+    <sys:String x:Key="SettingsMtu">MTU</sys:String>
+    <sys:String x:Key="SettingsRelayServer">中继服务器</sys:String>
+
+    <!-- 设置页 - 下载 -->
+    <sys:String x:Key="SettingsDownload">下载</sys:String>
+    <sys:String x:Key="SettingsDownloadSource">下载源</sys:String>
+    <sys:String x:Key="SettingsSource">资源来源</sys:String>
+    <sys:String x:Key="SettingsSpeedLimit">限速</sys:String>
+    <sys:String x:Key="SettingsMaxThreads">最大线程数</sys:String>
+    <sys:String x:Key="SettingsVerifySsl">验证 SSL 证书</sys:String>
+    <sys:String x:Key="SettingsVersionListSource">版本列表来源</sys:String>
+    <sys:String x:Key="SettingsVersionDisplay">版本显示</sys:String>
+    <sys:String x:Key="SettingsShowSnapshot">显示快照版本</sys:String>
+    <sys:String x:Key="SettingsShowOldBeta">显示旧版/Beta</sys:String>
+    <sys:String x:Key="SettingsAutoChinese">自动中文</sys:String>
+    <sys:String x:Key="SettingsGameLanguage">游戏语言</sys:String>
+    <sys:String x:Key="SettingsGameUpdateHint">游戏更新提示</sys:String>
+    <sys:String x:Key="SettingsUpdateRelease">更新正式版</sys:String>
+    <sys:String x:Key="SettingsUpdateSnapshot">更新快照版</sys:String>
+    <sys:String x:Key="SettingsAutoCheckUpdate">自动检查更新</sys:String>
+    <sys:String x:Key="SettingsFileNameFormat">文件名格式</sys:String>
+    <sys:String x:Key="SettingsModManageStyle">模组管理样式</sys:String>
+    <sys:String x:Key="SettingsCommunityResources">社区资源</sys:String>
+    <sys:String x:Key="SettingsShowPing">显示延迟</sys:String>
+    <sys:String x:Key="SettingsShowAprilFool">愚人节彩蛋</sys:String>
+    <sys:String x:Key="SettingsAccessibility">无障碍</sys:String>
+    <sys:String x:Key="SettingsOpenConfig">打开配置文件</sys:String>
+    <sys:String x:Key="SettingsConfigFile">配置文件</sys:String>
+    <sys:String x:Key="SettingsResetAll">重置所有设置</sys:String>
+
+    <!-- 选项 - 通用 -->
+    <sys:String x:Key="OptAuto">自动</sys:String>
+    <sys:String x:Key="OptCustom">自定义</sys:String>
+    <sys:String x:Key="OptOff">关闭</sys:String>
+    <sys:String x:Key="OptRandom">随机</sys:String>
+
+    <!-- 选项 - 背景适应 -->
+    <sys:String x:Key="OptFitAuto">自动</sys:String>
+    <sys:String x:Key="OptFitCenter">居中</sys:String>
+    <sys:String x:Key="OptFitCenterRatio">等比居中</sys:String>
+    <sys:String x:Key="OptFitStretch">拉伸</sys:String>
+    <sys:String x:Key="OptFitTile">平铺</sys:String>
+
+    <!-- 选项 - 垃圾回收 -->
+    <sys:String x:Key="OptGcNone">默认</sys:String>
+    <sys:String x:Key="OptGcG1gc">G1GC</sys:String>
+    <sys:String x:Key="OptGcTunedG1gc">优化 G1GC</sys:String>
+    <sys:String x:Key="OptGcZgc">ZGC</sys:String>
+    <sys:String x:Key="OptGcGenZgc">Generational ZGC</sys:String>
+
+    <!-- 选项 - 版本隔离 -->
+    <sys:String x:Key="OptIsolationAll">全部隔离</sys:String>
+    <sys:String x:Key="OptIsolationNonRelease">非正式版隔离</sys:String>
+    <sys:String x:Key="OptIsolationModded">模组版隔离</sys:String>
+    <sys:String x:Key="OptIsolationModdedNonRelease">模组版且非正式版隔离</sys:String>
+
+    <!-- 选项 - 联机模式 -->
+    <sys:String x:Key="OptLinkDirectOnly">仅直连</sys:String>
+    <sys:String x:Key="OptLinkP2P">P2P</sys:String>
+    <sys:String x:Key="OptLinkRelay">中继</sys:String>
+    <sys:String x:Key="OptLinkRelayOnly">仅中继</sys:String>
+
+    <!-- 选项 - Logo -->
+    <sys:String x:Key="OptLogoDefault">默认</sys:String>
+    <sys:String x:Key="OptLogoNone">无</sys:String>
+    <sys:String x:Key="OptLogoVanilla">原版</sys:String>
+
+    <!-- 选项 - 模组样式 -->
+    <sys:String x:Key="OptModName1">样式一</sys:String>
+    <sys:String x:Key="OptModName2">样式二</sys:String>
+    <sys:String x:Key="OptModName3">样式三</sys:String>
+    <sys:String x:Key="OptModName4">样式四</sys:String>
+    <sys:String x:Key="OptModName5">样式五</sys:String>
+    <sys:String x:Key="OptModStyle1">简洁</sys:String>
+    <sys:String x:Key="OptModStyle2">卡片</sys:String>
+
+    <!-- 选项 - 优先级 -->
+    <sys:String x:Key="OptPriorityHigh">高</sys:String>
+    <sys:String x:Key="OptPriorityMedium">中</sys:String>
+    <sys:String x:Key="OptPriorityLow">低</sys:String>
+
+    <!-- 选项 - 中继服务器 -->
+    <sys:String x:Key="OptRelayAuto">自动</sys:String>
+    <sys:String x:Key="OptRelayCNEast">中国华东</sys:String>
+    <sys:String x:Key="OptRelayCNSouth">中国华南</sys:String>
+    <sys:String x:Key="OptRelayHK">香港</sys:String>
+    <sys:String x:Key="OptRelayTokyo">东京</sys:String>
+    <sys:String x:Key="OptRelaySingapore">新加坡</sys:String>
+    <sys:String x:Key="OptRelayFrankfurt">法兰克福</sys:String>
+    <sys:String x:Key="OptRelayLA">洛杉矶</sys:String>
+
+    <!-- 选项 - 皮肤 -->
+    <sys:String x:Key="OptSkinPlayerName">玩家名皮肤</sys:String>
+    <sys:String x:Key="OptSkinPremium">正版皮肤</sys:String>
+
+    <!-- 选项 - 下载源 -->
+    <sys:String x:Key="OptSourceOfficial">官方源</sys:String>
+    <sys:String x:Key="OptSourceMirror">镜像源</sys:String>
+    <sys:String x:Key="OptSourceOfficialFallback">官方源 (镜像回退)</sys:String>
+    <sys:String x:Key="OptSourceOfficialFallback2">官方源 (双镜像回退)</sys:String>
+
+    <!-- 选项 - 限速 -->
+    <sys:String x:Key="OptSpeedUnlimited">不限速</sys:String>
+
+    <!-- 选项 - 可见性 -->
+    <sys:String x:Key="OptVisClose">关闭启动器</sys:String>
+    <sys:String x:Key="OptVisHideClose">隐藏并关闭</sys:String>
+    <sys:String x:Key="OptVisHideReopen">隐藏并在退出后重新打开</sys:String>
+    <sys:String x:Key="OptVisKeep">保持显示</sys:String>
+    <sys:String x:Key="OptVisMinimize">最小化</sys:String>
+
+    <!-- 选项 - 窗口大小 -->
+    <sys:String x:Key="OptWindowCustom">自定义</sys:String>
+    <sys:String x:Key="OptWindowDefault">默认</sys:String>
+    <sys:String x:Key="OptWindowFullscreen">全屏</sys:String>
+    <sys:String x:Key="OptWindowLauncherSize">启动器大小</sys:String>
+    <sys:String x:Key="OptWindowMaximize">最大化</sys:String>
+
+    <!-- 设置页标签 -->
+    <sys:String x:Key="SettingsTabLaunch">启动选项</sys:String>
+    <sys:String x:Key="SettingsTabUI">外观</sys:String>
+    <sys:String x:Key="SettingsTabLink">联机</sys:String>
+    <sys:String x:Key="SettingsTabSystem">系统</sys:String>
+
+    <!-- 启动状态 -->
+    <sys:String x:Key="LaunchLaunching">启动中...</sys:String>
+    <sys:String x:Key="LaunchSuccess">启动成功</sys:String>
+    <sys:String x:Key="LaunchFailed">启动失败</sys:String>
+
+    <!-- 通用按钮 -->
+    <sys:String x:Key="CommonCancel">取消</sys:String>
+
+    <!-- 更多页面 -->
+    <sys:String x:Key="MoreChecking">检查中...</sys:String>
+
+    <!-- 状态文本 -->
+    <sys:String x:Key="StatusLoading">加载中...</sys:String>
+    <sys:String x:Key="StatusLoadingVersionList">正在加载版本列表</sys:String>
+    <sys:String x:Key="StatusNoAvailableVersion">无可用版本</sys:String>
+    <sys:String x:Key="StatusNoInstalledVersion">未安装版本</sys:String>
+    <sys:String x:Key="StatusNoDownloadTask">无下载任务</sys:String>
+    <sys:String x:Key="StatusNoVersionInCategory">该分类暂无版本</sys:String>
+    <sys:String x:Key="StatusClickDownloadStart">点击下载开始</sys:String>
+    <sys:String x:Key="StatusSelectDownloadUrl">选择下载源</sys:String>
+    <sys:String x:Key="StatusCustomMirrorHint">输入自定义镜像地址</sys:String>
+
+    <!-- 版本设置 - 补充 -->
+    <sys:String x:Key="VerSettingsModsCount">已安装 {0} 个模组</sys:String>
+    <sys:String x:Key="VerSettingsDeleteVersion">删除版本</sys:String>
+    <sys:String x:Key="VerSettingsDeleteConfirm">确定要删除此版本吗？此操作不可恢复。</sys:String>
+    <sys:String x:Key="VerSettingsDeleted">版本已删除</sys:String>
+</ResourceDictionary>

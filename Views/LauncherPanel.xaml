@@ -1,0 +1,1748 @@
+<UserControl x:Class="DynamicIsland.LauncherPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="ColorBrush3">#4890f5</SolidColorBrush>
+        <SolidColorBrush x:Key="ColorBrushGray2">#a6a6a6</SolidColorBrush>
+        <SolidColorBrush x:Key="ColorBrushGray3">#888888</SolidColorBrush>
+
+        <Style x:Key="NavItem" TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Margin" Value="6,3"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0,0.5"/>
+        </Style>
+
+        <Style x:Key="CardButton" TargetType="Button">
+            <Setter Property="Background" Value="#FF3A3A3E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="14,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="MinHeight" Value="32"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" Background="{TemplateBinding Background}"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="btnBorder"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="#FF505056" Duration="0:0:0.18"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="btnBorder"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="#FF3A3A3E" Duration="0:0:0.18"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="btnBorder" Property="Background" Value="#FF2D2D30"/>
+                                <Setter Property="Foreground" Value="#FF666666"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 自定义设置卡片 -->
+        <Style x:Key="SettingsCard" TargetType="Border">
+            <Setter Property="Background" Value="#FF1F1F23"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="18,14"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <!-- 自定义设置卡片标题 -->
+        <Style x:Key="SettingsCardTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,14"/>
+        </Style>
+
+        <!-- 自定义设置项标签 -->
+        <Style x:Key="SettingsItemLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FFB0B0B4"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- 自定义ComboBox -->
+        <Style x:Key="SettingsComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="#FF2D2D32"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="ItemContainerStyle" Value="{DynamicResource SettingsComboBoxItem}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="cbBorder" Background="{TemplateBinding Background}"
+                                    CornerRadius="6" BorderThickness="1" BorderBrush="#FF3A3A3E"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="24"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter Grid.Column="0" Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                  Margin="10,0,0,0"/>
+                                <Path Grid.Column="1" Data="M0,0 L6,6 L12,0" Stroke="#FFA0A0A4" StrokeThickness="1.5"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      RenderTransformOrigin="0.5,0.5">
+                                    <Path.RenderTransform>
+                                        <RotateTransform x:Name="cbArrow" Angle="0"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Grid>
+                            <ToggleButton x:Name="PART_ToggleButton"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Focusable="False" ClickMode="Press" Cursor="Hand">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent"/>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom" AllowsTransparency="True" PopupAnimation="Slide"
+                                   VerticalOffset="2" MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border Background="#FF2A2A2E" CornerRadius="6" Padding="4"
+                                        MaxHeight="280" BorderBrush="#FF3A3A3E" BorderThickness="1">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <StackPanel IsItemsHost="True"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="cbBorder" Property="BorderBrush" Value="#FF5090F5"/>
+                            </Trigger>
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter TargetName="cbBorder" Property="BorderBrush" Value="#FF5090F5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SettingsComboBoxItem" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#FFD0D0D4"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="cbiBg" Background="Transparent" CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="cbiBg" Property="Background" Value="#FF3A3A3E"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="cbiBg" Property="Background" Value="#FF3A5070"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 自定义TextBox -->
+        <Style x:Key="SettingsTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Background" Value="#FF2D2D32"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#FF3A3A3E"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="CaretBrush" Value="#FF5090F5"/>
+            <Setter Property="SelectionBrush" Value="#FF3A5070"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="tbBorder" Background="{TemplateBinding Background}"
+                                CornerRadius="6" BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="tbBorder" Property="BorderBrush" Value="#FF505056"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="tbBorder" Property="BorderBrush" Value="#FF5090F5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 自定义CheckBox -->
+        <Style x:Key="SettingsCheckBox" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#FFB0B0B4"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="chkBox" Width="18" Height="18" CornerRadius="4"
+                                    Background="#FF2D2D32" BorderBrush="#FF4A4A4E" BorderThickness="1.5"
+                                    VerticalAlignment="Center">
+                                <Path x:Name="chkMark" Data="M3,7 L7,11 L14,3" Stroke="White"
+                                      StrokeThickness="2" Stretch="Uniform" Margin="2"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      Opacity="0"/>
+                            </Border>
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="chkBox" Property="BorderBrush" Value="#FF5090F5"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="chkBox" Property="Background" Value="#FF5090F5"/>
+                                <Setter TargetName="chkBox" Property="BorderBrush" Value="#FF5090F5"/>
+                                <Setter TargetName="chkMark" Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 自定义RadioButton -->
+        <Style x:Key="SettingsRadioButton" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#FFB0B0B4"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,5,20,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="rbOuter" Width="18" Height="18" CornerRadius="9"
+                                    Background="#FF2D2D32" BorderBrush="#FF4A4A4E" BorderThickness="1.5"
+                                    VerticalAlignment="Center">
+                                <Ellipse x:Name="rbDot" Width="8" Height="8" Fill="White"
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         Opacity="0"/>
+                            </Border>
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              VerticalAlignment="Center" Margin="8,0,0,0"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="rbOuter" Property="BorderBrush" Value="#FF5090F5"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="rbOuter" Property="BorderBrush" Value="#FF5090F5"/>
+                                <Setter TargetName="rbDot" Property="Opacity" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 自定义Slider -->
+        <Style x:Key="SettingsSlider" TargetType="Slider">
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid VerticalAlignment="Center">
+                            <Border Height="4" CornerRadius="2" Background="#FF3A3A3E" VerticalAlignment="Center"/>
+                            <Track x:Name="PART_Track">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="Slider.DecreaseLarge">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Border Height="4" CornerRadius="2" Background="#FF5090F5"/>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="Slider.IncreaseLarge">
+                                        <RepeatButton.Template>
+                                            <ControlTemplate TargetType="RepeatButton">
+                                                <Border Background="Transparent"/>
+                                            </ControlTemplate>
+                                        </RepeatButton.Template>
+                                    </RepeatButton>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Grid>
+                                                    <Border x:Name="thumbGlow" Width="18" Height="18" CornerRadius="9"
+                                                            Background="#FF5090F5" Opacity="0.3"
+                                                            RenderTransformOrigin="0.5,0.5">
+                                                        <Border.RenderTransform>
+                                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                                        </Border.RenderTransform>
+                                                    </Border>
+                                                    <Border Width="14" Height="14" CornerRadius="7"
+                                                            Background="White" BorderBrush="#FF5090F5" BorderThickness="2"/>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="thumbGlow" Property="Opacity" Value="0.5"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomScrollBar" TargetType="ScrollViewer">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid>
+                            <ScrollContentPresenter Margin="{TemplateBinding Padding}"/>
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       HorizontalAlignment="Right"
+                                       Width="5"
+                                       Minimum="0" Maximum="{TemplateBinding ScrollableHeight}"
+                                       Value="{TemplateBinding VerticalOffset}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}">
+                                <ScrollBar.Template>
+                                    <ControlTemplate TargetType="ScrollBar">
+                                        <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                            <Track.DecreaseRepeatButton>
+                                                <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0"/>
+                                            </Track.DecreaseRepeatButton>
+                                            <Track.Thumb>
+                                                <Thumb>
+                                                    <Thumb.Template>
+                                                        <ControlTemplate TargetType="Thumb">
+                                                            <Border Background="#FF606060"
+                                                                    CornerRadius="2.5"
+                                                                    MinHeight="20"
+                                                                    Margin="1,2"/>
+                                                        </ControlTemplate>
+                                                    </Thumb.Template>
+                                                </Thumb>
+                                            </Track.Thumb>
+                                            <Track.IncreaseRepeatButton>
+                                                <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0"/>
+                                            </Track.IncreaseRepeatButton>
+                                        </Track>
+                                    </ControlTemplate>
+                                </ScrollBar.Template>
+                            </ScrollBar>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="12,10,12,10">
+        <Grid.RenderTransform>
+            <TranslateTransform x:Name="PanelSlide"/>
+        </Grid.RenderTransform>
+
+        <!-- 收起按钮（固定在导航栏最顶部） -->
+        <Border x:Name="CollapseNav" Style="{StaticResource NavItem}" MouseLeftButtonUp="CollapseNav_Click"
+                MouseEnter="NavItem_MouseEnter" MouseLeave="NavItem_MouseLeave"
+                VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <TranslateTransform/>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </TransformGroup>
+            </Border.RenderTransform>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Path Stretch="Uniform" Fill="{StaticResource ColorBrushGray2}" Width="18" Height="18" Margin="0,0,10,0"
+                      Stroke="{StaticResource ColorBrushGray2}" StrokeThickness="2" StrokeLineJoin="Round"
+                      Data="M40 22H15.66l11.17-11.17L24 8 8 24l16 16 2.83-2.83L15.66 26H40z"/>
+                <TextBlock Text="{DynamicResource NavCollapse}" Foreground="White" FontSize="14" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- 左侧导航栏 -->
+        <StackPanel x:Name="LeftNav" VerticalAlignment="Center" HorizontalAlignment="Left">
+
+            <!-- 1. 启动 -->
+            <Border Style="{StaticResource NavItem}" MouseLeftButtonUp="Nav_Click" Tag="launch"
+                    MouseEnter="NavItem_MouseEnter" MouseLeave="NavItem_MouseLeave">
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform/>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Stretch="Uniform" Fill="{StaticResource ColorBrushGray2}" Width="18" Height="18" Margin="0,0,10,0"
+                          Stroke="{StaticResource ColorBrushGray2}" StrokeThickness="2" StrokeLineJoin="Round"
+                          Data="M18.705 7.894 24 4l5.295 3.894A14 14 0 0 1 35 19.172V37H13V19.172a14 14 0 0 1 5.705-11.278Z M13 17l-6 6v8l6-3V17Z M35 17l6 6v8l-6-3V17Z M18 39v3 M24 39v5 M30 39v3"/>
+                    <TextBlock Text="{DynamicResource NavLaunch}" Foreground="White" FontSize="14" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 2. 下载 -->
+            <Border Style="{StaticResource NavItem}" MouseLeftButtonUp="Nav_Click" Tag="download"
+                    MouseEnter="NavItem_MouseEnter" MouseLeave="NavItem_MouseLeave">
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform/>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Stretch="Uniform" Fill="{StaticResource ColorBrushGray2}" Width="18" Height="18" Margin="0,0,10,0"
+                          Data="M351.9,801.7c-8.6,0-17-3-23.7-8.4L18.9,614.7c-12.5-7.2-19.7-20.5-18.8-34.9V221c-.7-15,6.6-28.8,19.2-36L325.2,8.3c6.6-5.3,15.1-8.3,24-8.3s17.3,2.9,23.9,8.2l308.3,178c.2.1.5.3.8.5h0c12,6.7,19.4,19.8,19.4,34.1,0,13.9-7.1,26-18.7,32.5l-290.1,167.5v276l234-135.1v-168.9c0-20.8,17-37.8,37.8-37.8s37.8,17,37.8,37.8v191.7c0,16.4-10.9,31.2-26.5,36.1l-299.4,172.8c-6.7,5.4-15.1,8.3-23.7,8.3h-.9Zm-34.8-101.9v-276l-241.4-139.4v276l241.4,139.4Zm35.3-342.8l236.8-136.7-240-138.6L112.4,218.3l240,138.6Z"/>
+                    <TextBlock Text="{DynamicResource NavDownload}" Foreground="White" FontSize="14" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 3. 下载中心 -->
+            <Border Style="{StaticResource NavItem}" MouseLeftButtonUp="Nav_Click" Tag="downloadcenter"
+                    MouseEnter="NavItem_MouseEnter" MouseLeave="NavItem_MouseLeave">
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform/>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Stretch="Uniform" Fill="{StaticResource ColorBrushGray2}" Width="18" Height="18" Margin="0,0,10,0"
+                          Stroke="{StaticResource ColorBrushGray2}" StrokeThickness="2" StrokeLineJoin="Round"
+                          Data="M41.4004 11.551L36.3332 5H11.6666L6.58398 11.551 M6 13C6 11.8954 6.89543 11 8 11H40C41.1046 11 42 11.8954 42 13V40C42 41.6569 40.6569 43 39 43H9C7.34315 43 6 41.6569 6 40V13Z M32 27L24 35L16 27 M23.9917 19V35"/>
+                    <TextBlock Text="{DynamicResource PageDownloadCenter}" Foreground="White" FontSize="14" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 4. 设置 -->
+            <Border Style="{StaticResource NavItem}" MouseLeftButtonUp="Nav_Click" Tag="settings"
+                    MouseEnter="NavItem_MouseEnter" MouseLeave="NavItem_MouseLeave">
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform/>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Stretch="Uniform" Fill="{StaticResource ColorBrushGray2}" Width="18" Height="18" Margin="0,0,10,0"
+                          Stroke="{StaticResource ColorBrushGray2}" StrokeThickness="2" StrokeLineJoin="Round"
+                          Data="M18.284 43.171a19.995 19.995 0 0 1-8.696-5.304 6 6 0 0 0-5.182-9.838A20.09 20.09 0 0 1 4 24c0-2.09.32-4.106.916-6H5a6 6 0 0 0 5.385-8.65 19.968 19.968 0 0 1 8.267-4.627A6 6 0 0 0 24 8a6 6 0 0 0 5.348-3.277 19.968 19.968 0 0 1 8.267 4.627A6 6 0 0 0 43.084 18c.595 1.894.916 3.91.916 6 0 1.38-.14 2.728-.406 4.03a6 6 0 0 0-5.182 9.838 19.995 19.995 0 0 1-8.696 5.303 6.003 6.003 0 0 0-11.432 0Z M24 31a7 7 0 1 0 0-14 7 7 0 0 0 0 14Z"/>
+                    <TextBlock Text="{DynamicResource NavSettings}" Foreground="White" FontSize="14" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 5. 其他 -->
+            <Border Style="{StaticResource NavItem}" MouseLeftButtonUp="Nav_Click" Tag="more"
+                    MouseEnter="NavItem_MouseEnter" MouseLeave="NavItem_MouseLeave">
+                <Border.RenderTransform>
+                    <TransformGroup>
+                        <TranslateTransform/>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </TransformGroup>
+                </Border.RenderTransform>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Stretch="Uniform" Fill="{StaticResource ColorBrushGray2}" Width="18" Height="18" Margin="0,0,10,0"
+                          Stroke="{StaticResource ColorBrushGray2}" StrokeThickness="2" StrokeLineJoin="Round"
+                          Data="M32 6H22v36h10V6Z M42 6H32v36h10V6Z M10 6l8 1-3.5 35L6 41l4-35Z M37 18v-3 M27 18v-3"/>
+                    <TextBlock Text="{DynamicResource NavMore}" Foreground="White" FontSize="14" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+
+        <!-- 退出按钮（固定在导航栏最底部） -->
+        <Border x:Name="ExitNav" Style="{StaticResource NavItem}" MouseLeftButtonUp="ExitNav_Click"
+                MouseEnter="NavItem_MouseEnter" MouseLeave="NavItem_MouseLeave"
+                VerticalAlignment="Bottom" HorizontalAlignment="Left">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <TranslateTransform/>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </TransformGroup>
+            </Border.RenderTransform>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Path Stretch="Uniform" Width="18" Height="18" Margin="0,0,10,0"
+                      Stroke="{StaticResource ColorBrushGray2}" StrokeThickness="3"
+                      StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                      Data="M9 9L39 39 M39 9L9 39"/>
+                <TextBlock Text="{DynamicResource NavExit}" Foreground="White" FontSize="14" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- 右侧内容区 -->
+        <Grid x:Name="ContentArea" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+              Margin="185,0,0,0" Visibility="Collapsed"
+              ClipToBounds="True">
+
+            <!-- 下载页面（版本选择 + 资源下载） -->
+            <Grid x:Name="DownloadPage" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="DownloadPageSlide"/>
+                </Grid.RenderTransform>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- 标题栏 -->
+                <Border Grid.Row="0" Height="44" Background="#FF1F1F23" CornerRadius="8,8,0,0">
+                    <Grid Margin="16,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource PageDownload}" Foreground="White" FontSize="14"
+                                   FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- 资源类型切换栏 -->
+                <Border Grid.Row="1" Height="40" Background="#FF1A1A1E" Margin="0,1,0,0">
+                    <StackPanel x:Name="ResourceTypePanel" Orientation="Horizontal"
+                                VerticalAlignment="Center" Margin="12,0"/>
+                </Border>
+
+                <!-- 游戏分类筛选栏（仅游戏模式显示） -->
+                <Border Grid.Row="2" x:Name="GameCategoryBar" Height="40" Background="#FF1F1F1F" Margin="0,1,0,0">
+                    <StackPanel x:Name="CategoryFilterPanel" Orientation="Horizontal"
+                                VerticalAlignment="Center" Margin="12,0"/>
+                </Border>
+
+                <!-- 资源搜索栏（仅资源模式显示） -->
+                <Border Grid.Row="2" x:Name="ResourceSearchBar" Height="40" Background="#FF1F1F1F"
+                        Margin="0,1,0,0" Visibility="Collapsed">
+                    <Grid Margin="12,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" x:Name="ResourceSearchBox" VerticalContentAlignment="Center"
+                                 Background="#FF2D2D30" Foreground="White" FontSize="12"
+                                 BorderThickness="0" Padding="10,0" Height="28"
+                                 InputMethod.IsInputMethodEnabled="True"
+                                 PreviewKeyDown="ResourceSearchBox_PreviewKeyDown"
+                                 KeyDown="ResourceSearchBox_KeyDown"/>
+                        <Button Grid.Column="1" Content="{DynamicResource DownloadSearch}" Margin="8,0,0,0"
+                                Style="{StaticResource CardButton}" Height="28" FontSize="12"
+                                Click="ResourceSearch_Click">
+                            <Button.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource CardButton}">
+                                    <Setter Property="Background" Value="#FF4890F5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!-- 列表区域 -->
+                <Border Grid.Row="3" x:Name="ListArea" Background="#FF252529" Margin="0,1,0,0" ClipToBounds="True">
+                    <ScrollViewer x:Name="VersionScrollViewer" Style="{StaticResource CustomScrollBar}"
+                                  VerticalScrollBarVisibility="Visible"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  PreviewMouseWheel="SmoothScroll_PreviewMouseWheel">
+                        <StackPanel x:Name="VersionList" Margin="10,8"/>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- 底部操作栏 -->
+                <Border Grid.Row="4" x:Name="BottomActionBar" Height="52" Background="#FF1F1F23"
+                        CornerRadius="0,0,8,8" Margin="0,1,0,0">
+                    <Grid Margin="16,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Text="{DynamicResource DownloadTarget}" Foreground="#FF888888" FontSize="12"/>
+                            <TextBlock Text="{DynamicResource DownloadNotSelected}" Foreground="White" FontSize="13"
+                                       FontWeight="Medium" Margin="6,0,0,0"
+                                       x:Name="SelectedVersionText"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="{DynamicResource DownloadStart}"
+                                Style="{StaticResource CardButton}"
+                                Width="100" FontSize="13"
+                                FontWeight="SemiBold" IsEnabled="False"
+                                x:Name="DownloadButton" Click="StartDownload_Click">
+                            <Button.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource CardButton}">
+                                    <Setter Property="Background" Value="#FF4890F5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- 下载管理页面 -->
+            <Grid x:Name="DownloadCenterPage" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="DownloadCenterPageSlide"/>
+                </Grid.RenderTransform>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- 标题栏 -->
+                <Border Grid.Row="0" Height="44" Background="#FF1F1F23" CornerRadius="8,8,0,0">
+                    <Grid Margin="16,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource DownloadManagement}" Foreground="White" FontSize="14"
+                                   FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- 下载任务区域 -->
+                <Border Grid.Row="1" Background="#FF252529" Margin="0,1,0,0"
+                        CornerRadius="0,0,8,8" ClipToBounds="True">
+                    <ScrollViewer x:Name="TaskScrollViewer" Style="{StaticResource CustomScrollBar}"
+                                  VerticalScrollBarVisibility="Visible"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  PreviewMouseWheel="SmoothScroll_PreviewMouseWheel">
+                        <StackPanel x:Name="DownloadTaskList" Margin="16,12"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+
+            <!-- 启动页面 -->
+            <Grid x:Name="LaunchPage" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="LaunchPageSlide"/>
+                </Grid.RenderTransform>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- 标题栏 -->
+                <Border Grid.Row="0" Height="44" Background="#FF1F1F23" CornerRadius="8,8,0,0">
+                    <Grid Margin="16,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{DynamicResource PageLaunch}" Foreground="White" FontSize="14"
+                                   FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="RefreshVersionsBtn" Content="{DynamicResource CommonRefresh}"
+                                Style="{StaticResource CardButton}" Height="26" FontSize="12"
+                                Click="RefreshVersions_Click"/>
+                    </Grid>
+                </Border>
+
+                <!-- 主体：版本列表 -->
+                <Border Grid.Row="1" Background="#FF252529" Margin="0,1,0,0" ClipToBounds="True">
+                    <ScrollViewer Style="{StaticResource CustomScrollBar}"
+                                  VerticalScrollBarVisibility="Visible"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  PreviewMouseWheel="SmoothScroll_PreviewMouseWheel">
+                        <StackPanel x:Name="LaunchVersionList" Margin="10,8"/>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- 底部：账号 + 内存 + 启动按钮 -->
+                <Border Grid.Row="2" Background="#FF1F1F23" Margin="0,1,0,0"
+                        CornerRadius="0,0,8,8" Padding="16,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 玩家名 + 内存 -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="{DynamicResource LaunchPlayer}" Foreground="#FFA6A6A6" FontSize="12"
+                                       VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <TextBox x:Name="PlayerNameBox" Width="120" Height="28"
+                                     VerticalContentAlignment="Center"
+                                     Background="#FF2D2D30" Foreground="White" FontSize="12"
+                                     BorderThickness="0" Padding="8,0" Text="Player"/>
+                            <TextBlock Text="{DynamicResource LaunchMemory}" Foreground="#FFA6A6A6" FontSize="12"
+                                       VerticalAlignment="Center" Margin="16,0,6,0"/>
+                            <TextBox x:Name="RamBox" Width="60" Height="28"
+                                     VerticalContentAlignment="Center"
+                                     Background="#FF2D2D30" Foreground="White" FontSize="12"
+                                     BorderThickness="0" Padding="8,0" Text="2048"/>
+                            <TextBlock Text="MB" Foreground="#FFA6A6A6" FontSize="12"
+                                       VerticalAlignment="Center" Margin="4,0,0,0"/>
+                        </StackPanel>
+
+                        <!-- 选中版本显示 -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,12,0">
+                            <TextBlock x:Name="LaunchStatusText" FontSize="12" FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Margin="0,0,8,0" Visibility="Collapsed"/>
+                            <TextBlock x:Name="SelectedLaunchVersion"
+                                       Foreground="#FFA6A6A6" FontSize="12"
+                                       VerticalAlignment="Center"
+                                       Text="{DynamicResource LaunchNoVersionSelected}"/>
+                        </StackPanel>
+
+                        <!-- 启动按钮 -->
+                        <Button Grid.Column="2" x:Name="LaunchButton" Content="{DynamicResource LaunchStart}"
+                                Style="{StaticResource CardButton}"
+                                Width="110" Height="32" FontSize="13"
+                                FontWeight="SemiBold" IsEnabled="False"
+                                Click="LaunchGame_Click">
+                            <Button.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource CardButton}">
+                                    <Setter Property="Background" Value="#FF4890F5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- 版本设置页面 -->
+            <Grid x:Name="VersionSettingsPage" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="VersionSettingsPageSlide"/>
+                </Grid.RenderTransform>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- 标题栏 -->
+                <Border Grid.Row="0" Background="#FF1F1F23" CornerRadius="8,8,0,0">
+                    <Grid Margin="16,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" x:Name="VerSettingsBackBtn" Style="{StaticResource CardButton}"
+                                Height="26" FontSize="12" Click="VerSettingsBack_Click"
+                                Content="{DynamicResource VerSettingsBack}"/>
+                        <TextBlock Grid.Column="1" x:Name="VerSettingsTitleText"
+                                   Foreground="White" FontSize="14" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" Margin="12,0,0,0"
+                                   Text="{DynamicResource VerSettingsTitle}"/>
+                    </Grid>
+                </Border>
+
+                <!-- 主体 -->
+                <Border Grid.Row="1" Background="#FF252529" Margin="0,1,0,0" ClipToBounds="True">
+                    <ScrollViewer Style="{StaticResource CustomScrollBar}"
+                                  VerticalScrollBarVisibility="Visible"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  PreviewMouseWheel="SmoothScroll_PreviewMouseWheel">
+                        <StackPanel Margin="16,12">
+
+                            <!-- 显示名称 -->
+                            <TextBlock Text="{DynamicResource VerSettingsDisplayName}"
+                                       Foreground="#FFA6A6A6" FontSize="12" Margin="0,0,0,6"/>
+                            <TextBox x:Name="VerSettingsNameBox" Height="30"
+                                     VerticalContentAlignment="Center"
+                                     Background="#FF2D2D30" Foreground="White" FontSize="12"
+                                     BorderThickness="0" Padding="8,0" Margin="0,0,0,16"/>
+
+                            <!-- 内存分配 -->
+                            <TextBlock Text="{DynamicResource VerSettingsMemory}"
+                                       Foreground="#FFA6A6A6" FontSize="12" Margin="0,0,0,6"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <RadioButton x:Name="VerSettingsMemGlobal" Content="{DynamicResource VerSettingsMemGlobal}"
+                                             Foreground="White" FontSize="12" VerticalAlignment="Center"
+                                             Margin="0,0,16,0" Checked="VerSettingsMem_Checked"/>
+                                <RadioButton x:Name="VerSettingsMemCustom" Content="{DynamicResource VerSettingsMemCustom}"
+                                             Foreground="White" FontSize="12" VerticalAlignment="Center"
+                                             Margin="0,0,8,0" Checked="VerSettingsMem_Checked"/>
+                                <TextBox x:Name="VerSettingsMemBox" Width="70" Height="28"
+                                         VerticalContentAlignment="Center" IsEnabled="False"
+                                         Background="#FF2D2D30" Foreground="White" FontSize="12"
+                                         BorderThickness="0" Padding="8,0" Text="2048"/>
+                                <TextBlock Text="MB" Foreground="#FFA6A6A6" FontSize="12"
+                                           VerticalAlignment="Center" Margin="4,0,0,0"/>
+                            </StackPanel>
+
+                            <!-- JVM 参数 -->
+                            <TextBlock Text="{DynamicResource VerSettingsJvmArgs}"
+                                       Foreground="#FFA6A6A6" FontSize="12" Margin="0,0,0,6"/>
+                            <TextBox x:Name="VerSettingsJvmBox" Height="30"
+                                     VerticalContentAlignment="Center"
+                                     Background="#FF2D2D30" Foreground="White" FontSize="12"
+                                     BorderThickness="0" Padding="8,0" Margin="0,0,0,4"/>
+                            <TextBlock Text="{DynamicResource VerSettingsJvmArgsHint}"
+                                       Foreground="#FF666666" FontSize="11" Margin="0,0,0,16"/>
+
+                            <!-- 游戏参数 -->
+                            <TextBlock Text="{DynamicResource VerSettingsGameArgs}"
+                                       Foreground="#FFA6A6A6" FontSize="12" Margin="0,0,0,6"/>
+                            <TextBox x:Name="VerSettingsGameArgsBox" Height="30"
+                                     VerticalContentAlignment="Center"
+                                     Background="#FF2D2D30" Foreground="White" FontSize="12"
+                                     BorderThickness="0" Padding="8,0" Margin="0,0,0,4"/>
+                            <TextBlock Text="{DynamicResource VerSettingsGameArgsHint}"
+                                       Foreground="#FF666666" FontSize="11" Margin="0,0,0,16"/>
+
+                            <!-- 打开版本文件夹 -->
+                            <Button x:Name="VerSettingsOpenFolderBtn" Style="{StaticResource CardButton}"
+                                    Height="32" FontSize="12" Margin="0,0,0,16"
+                                    HorizontalAlignment="Left" Padding="16,0"
+                                    Click="VerSettingsOpenFolder_Click"
+                                    Content="{DynamicResource VerSettingsOpenFolder}"/>
+
+                            <!-- 模组管理 -->
+                            <StackPanel x:Name="VerSettingsModsArea">
+                                <TextBlock Text="{DynamicResource VerSettingsMods}"
+                                           Foreground="#FFA6A6A6" FontSize="12" Margin="0,0,0,4"/>
+                                <TextBlock x:Name="VerSettingsModsHint" FontSize="11" Margin="0,0,0,8"
+                                           Foreground="#FF666666"
+                                           Text="{DynamicResource VerSettingsModsHint}"/>
+                                <Border x:Name="VerSettingsModsDropArea" Height="120"
+                                        Background="#FF2D2D30" CornerRadius="8"
+                                        BorderBrush="#FF3D3D42" BorderThickness="1"
+                                        AllowDrop="True"
+                                        Drop="VerSettingsMods_Drop" DragEnter="VerSettingsMods_DragEnter"
+                                        DragLeave="VerSettingsMods_DragLeave">
+                                    <Grid>
+                                        <StackPanel x:Name="VerSettingsModsListPanel"
+                                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        <TextBlock x:Name="VerSettingsModsDropText"
+                                                   Foreground="#FF4890F5" FontSize="13" FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Visibility="Collapsed"
+                                                   Text="{DynamicResource VerSettingsModsDrop}"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- 底部操作按钮 -->
+                <Border Grid.Row="2" Background="#FF1F1F23" Margin="0,1,0,0"
+                        CornerRadius="0,0,8,8" Padding="16,10">
+                    <Grid>
+                        <Button x:Name="VerSettingsDeleteBtn" Style="{StaticResource CardButton}"
+                                Height="32" FontSize="13" FontWeight="SemiBold"
+                                HorizontalAlignment="Left" Width="100"
+                                Click="VerSettingsDelete_Click"
+                                Content="{DynamicResource VerSettingsDeleteVersion}">
+                            <Button.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource CardButton}">
+                                    <Setter Property="Background" Value="#FFD44444"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <Button x:Name="VerSettingsSaveBtn" Style="{StaticResource CardButton}"
+                                Height="32" FontSize="13" FontWeight="SemiBold"
+                                HorizontalAlignment="Right" Width="120"
+                                Click="VerSettingsSave_Click"
+                                Content="{DynamicResource VerSettingsSave}">
+                            <Button.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource CardButton}">
+                                    <Setter Property="Background" Value="#FF4890F5"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- 设置页面 -->
+            <Grid x:Name="SettingsPage" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="SettingsPageSlide"/>
+                </Grid.RenderTransform>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="44"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- 标题栏 -->
+                <Border Grid.Row="0" Background="#FF1F1F23" CornerRadius="8,8,0,0">
+                    <Grid Margin="18,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="⚙" Foreground="#FF5090F5" FontSize="18"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource PageSettings}" Foreground="White" FontSize="15"
+                                   FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" x:Name="SettingsHintText" Foreground="#FF888888"
+                                   FontSize="11" VerticalAlignment="Center"
+                                   Text="{DynamicResource SettingsAutoSave}"/>
+                    </Grid>
+                </Border>
+
+                <!-- 设置子标签栏 -->
+                <Border Grid.Row="1" Background="#FF1A1A1E" Margin="0,1,0,0">
+                    <StackPanel x:Name="SettingsTabPanel" Orientation="Horizontal"
+                                VerticalAlignment="Center" Margin="14,0"/>
+                </Border>
+
+                <!-- 设置内容区 -->
+                <Border Grid.Row="2" Background="#FF252529" Margin="0,1,0,0"
+                        CornerRadius="0,0,8,8" ClipToBounds="True">
+                    <Grid x:Name="SettingsContentHost">
+
+                        <!-- 启动设置 -->
+                        <ScrollViewer x:Name="SettingsTabLaunch" Style="{StaticResource CustomScrollBar}"
+                                      VerticalScrollBarVisibility="Visible"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      PreviewMouseWheel="SmoothScroll_PreviewMouseWheel" Visibility="Collapsed">
+                            <StackPanel Margin="18,14">
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsLaunchOptions}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsVersionIsolation}"/>
+                                            <ComboBox x:Name="CfgVersionIsolation" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource OptOff}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptIsolationModded}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptIsolationNonRelease}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptIsolationModdedNonRelease}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptIsolationAll}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsWindowTitle}"/>
+                                            <TextBox x:Name="CfgWindowTitle" Grid.Column="1" Style="{StaticResource SettingsTextBox}"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsCustomInfo}"/>
+                                            <TextBox x:Name="CfgCustomInfo" Grid.Column="1" Style="{StaticResource SettingsTextBox}" Text="DIL"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsLauncherVisibility}"/>
+                                            <ComboBox x:Name="CfgLauncherVisibility" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource OptVisClose}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptVisHideClose}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptVisHideReopen}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptVisMinimize}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptVisKeep}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsProcessPriority}"/>
+                                            <ComboBox x:Name="CfgProcessPriority" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="1">
+                                                <ComboBoxItem Content="{DynamicResource OptPriorityHigh}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptPriorityMedium}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptPriorityLow}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsWindowSize}"/>
+                                            <ComboBox x:Name="CfgWindowType" Grid.Column="1" Style="{StaticResource SettingsComboBox}" MinWidth="130" SelectedIndex="1" Margin="0,0,8,0">
+                                                <ComboBoxItem Content="{DynamicResource OptWindowFullscreen}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptWindowDefault}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptWindowLauncherSize}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptWindowCustom}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptWindowMaximize}"/>
+                                            </ComboBox>
+                                            <TextBox x:Name="CfgWindowWidth" Grid.Column="2" Width="64" Style="{StaticResource SettingsTextBox}" Text="854" Visibility="Collapsed"/>
+                                            <TextBlock x:Name="CfgWindowX" Grid.Column="2" Text=" × " VerticalAlignment="Center"
+                                                       FontSize="14" Foreground="#FFA6A6A6" Visibility="Collapsed"/>
+                                            <TextBox x:Name="CfgWindowHeight" Grid.Column="3" Width="64" Style="{StaticResource SettingsTextBox}" Text="480" Visibility="Collapsed"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsMemoryAllocation}"/>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                            <RadioButton x:Name="CfgRamAuto" Content="{DynamicResource OptAuto}" Style="{StaticResource SettingsRadioButton}" IsChecked="True"
+                                                         Checked="CfgRamType_Changed" Unchecked="CfgRamType_Changed"/>
+                                            <RadioButton x:Name="CfgRamCustom" Content="{DynamicResource OptCustom}" Style="{StaticResource SettingsRadioButton}"
+                                                         Checked="CfgRamType_Changed" Unchecked="CfgRamType_Changed"/>
+                                            <Slider x:Name="CfgRamSlider" Width="220" Minimum="512" Maximum="16384"
+                                                    TickFrequency="256" IsSnapToTickEnabled="True" Style="{StaticResource SettingsSlider}"
+                                                    Value="2048" ValueChanged="CfgRamSlider_Changed"/>
+                                            <TextBlock x:Name="CfgRamLabel" Text="2048 MB" Foreground="#FFB0B0B4" FontSize="12"
+                                                       VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                        </StackPanel>
+
+                                        <CheckBox x:Name="CfgOptimizeMemory" Content="{DynamicResource SettingsOptimizeMemory}" Style="{StaticResource SettingsCheckBox}"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsSkin}"/>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                            <RadioButton x:Name="CfgSkin0" Content="{DynamicResource OptRandom}" Style="{StaticResource SettingsRadioButton}" IsChecked="True"/>
+                                            <RadioButton x:Name="CfgSkin1" Content="Steve" Style="{StaticResource SettingsRadioButton}"/>
+                                            <RadioButton x:Name="CfgSkin2" Content="Alex" Style="{StaticResource SettingsRadioButton}"/>
+                                            <RadioButton x:Name="CfgSkin3" Content="{DynamicResource OptSkinPremium}" Style="{StaticResource SettingsRadioButton}"/>
+                                            <RadioButton x:Name="CfgSkin4" Content="{DynamicResource OptCustom}" Style="{StaticResource SettingsRadioButton}"/>
+                                        </StackPanel>
+
+                                        <Grid x:Name="CfgSkinIdPanel" Margin="0,0,0,0" Visibility="Collapsed">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource OptSkinPlayerName}"/>
+                                            <TextBox x:Name="CfgSkinId" Grid.Column="1" Style="{StaticResource SettingsTextBox}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsAdvanced}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsJavaArgs}" VerticalAlignment="Top" Margin="0,6,0,0"/>
+                                            <TextBox x:Name="CfgJvmArgs" Grid.Column="1" Height="76"
+                                                     VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True"
+                                                     Style="{StaticResource SettingsTextBox}" Padding="10,6"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsGameArgs}"/>
+                                            <TextBox x:Name="CfgGameArgs" Grid.Column="1" Style="{StaticResource SettingsTextBox}"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsPreLaunch}"/>
+                                            <TextBox x:Name="CfgPreLaunch" Grid.Column="1" Style="{StaticResource SettingsTextBox}"/>
+                                        </Grid>
+
+                                        <CheckBox x:Name="CfgWaitPreLaunch" Content="{DynamicResource SettingsWaitPreLaunch}" Style="{StaticResource SettingsCheckBox}" Margin="0,4,0,10" IsChecked="True"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsGcType}"/>
+                                            <ComboBox x:Name="CfgGcType" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource OptGcZgc}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptGcGenZgc}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptGcG1gc}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptGcTunedG1gc}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptGcNone}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <StackPanel Margin="0,4,0,0">
+                                            <CheckBox x:Name="CfgDisableJlw" Content="{DynamicResource SettingsDisableJlw}" Style="{StaticResource SettingsCheckBox}"/>
+                                            <CheckBox x:Name="CfgDisableLua" Content="{DynamicResource SettingsDisableLua}" Style="{StaticResource SettingsCheckBox}"/>
+                                            <CheckBox x:Name="CfgHighPerfGpu" Content="{DynamicResource SettingsHighPerfGpu}" Style="{StaticResource SettingsCheckBox}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- 个性化设置 -->
+                        <ScrollViewer x:Name="SettingsTabUI" Style="{StaticResource CustomScrollBar}"
+                                      VerticalScrollBarVisibility="Visible"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      PreviewMouseWheel="SmoothScroll_PreviewMouseWheel" Visibility="Collapsed">
+                            <StackPanel Margin="18,14">
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsBasic}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsOpacity}"/>
+                                            <Slider x:Name="CfgOpacity" Grid.Column="1" Minimum="10" Maximum="100"
+                                                    Value="100" Style="{StaticResource SettingsSlider}"
+                                                    ValueChanged="CfgPersonalization_Changed"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsHue}"/>
+                                            <Slider x:Name="CfgHue" Grid.Column="1" Minimum="0" Maximum="360"
+                                                    Value="0" Style="{StaticResource SettingsSlider}"
+                                                    ValueChanged="CfgPersonalization_Changed"/>
+                                            <TextBlock Grid.Column="3" Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsSaturation}"/>
+                                            <Slider x:Name="CfgSaturation" Grid.Column="4" Minimum="0" Maximum="100"
+                                                    Value="0" Style="{StaticResource SettingsSlider}"
+                                                    ValueChanged="CfgPersonalization_Changed"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsLightness}"/>
+                                            <Slider x:Name="CfgLightness" Grid.Column="1" Minimum="0" Maximum="40"
+                                                    Value="0" Style="{StaticResource SettingsSlider}"
+                                                    ValueChanged="CfgPersonalization_Changed"/>
+                                            <TextBlock Grid.Column="3" Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsHueDelta}"/>
+                                            <Slider x:Name="CfgHueDelta" Grid.Column="4" Minimum="0" Maximum="180"
+                                                    Value="0" Style="{StaticResource SettingsSlider}"
+                                                    ValueChanged="CfgPersonalization_Changed"/>
+                                        </Grid>
+
+                                        <TextBlock Text="{DynamicResource SettingsTheme}" Foreground="#FFB0B0B4" FontSize="12" Margin="0,8,0,8"/>
+                                        <WrapPanel x:Name="CfgThemePanel" Margin="0,0,0,8"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsLanguage}"/>
+                                            <ComboBox x:Name="CfgLanguage" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="0" SelectionChanged="CfgLanguage_SelectionChanged">
+                                                <ComboBoxItem Content="English"/>
+                                                <ComboBoxItem Content="简体中文"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <CheckBox x:Name="CfgShowLogo" Content="{DynamicResource SettingsShowLogo}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsBackground}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsBackgroundFit}"/>
+                                            <ComboBox x:Name="CfgBackgroundFit" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource OptFitAuto}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptFitTile}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptFitCenter}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptFitStretch}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptFitCenterRatio}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsOpacity}"/>
+                                            <Slider x:Name="CfgBackgroundOpacity" Grid.Column="1" Minimum="0" Maximum="100"
+                                                    Value="100" Style="{StaticResource SettingsSlider}"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsBackgroundBlur}"/>
+                                            <Slider x:Name="CfgBackgroundBlur" Grid.Column="1" Minimum="0" Maximum="40"
+                                                    Value="0" Style="{StaticResource SettingsSlider}"/>
+                                        </Grid>
+
+                                        <CheckBox x:Name="CfgColorfulBackground" Content="{DynamicResource SettingsColorfulBackground}" Style="{StaticResource SettingsCheckBox}" Margin="0,4,0,10" IsChecked="True"/>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                            <Button Content="{DynamicResource CommonOpenFolder}" Style="{StaticResource CardButton}" Height="30"
+                                                    FontSize="12" Margin="0,0,10,0" Click="CfgOpenBackgroundFolder_Click"/>
+                                            <Button Content="{DynamicResource SettingsRefreshBackground}" Style="{StaticResource CardButton}" Height="30"
+                                                    FontSize="12" Click="CfgRefreshBackground_Click"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsMusic}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsMusicVolume}"/>
+                                            <Slider x:Name="CfgMusicVolume" Grid.Column="1" Minimum="0" Maximum="100"
+                                                    Value="50" Style="{StaticResource SettingsSlider}"/>
+                                        </Grid>
+
+                                        <StackPanel Margin="0,4,0,10">
+                                            <CheckBox x:Name="CfgMusicRandom" Content="{DynamicResource SettingsMusicRandom}" Style="{StaticResource SettingsCheckBox}"/>
+                                            <CheckBox x:Name="CfgMusicAuto" Content="{DynamicResource SettingsMusicAuto}" Style="{StaticResource SettingsCheckBox}"/>
+                                            <CheckBox x:Name="CfgMusicStart" Content="{DynamicResource SettingsMusicStart}" Style="{StaticResource SettingsCheckBox}"/>
+                                            <CheckBox x:Name="CfgMusicStop" Content="{DynamicResource SettingsMusicStop}" Style="{StaticResource SettingsCheckBox}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <Button Content="{DynamicResource CommonOpenFolder}" Style="{StaticResource CardButton}" Height="30"
+                                                    FontSize="12" Margin="0,0,10,0" Click="CfgOpenMusicFolder_Click"/>
+                                            <Button Content="{DynamicResource SettingsRefreshMusic}" Style="{StaticResource CardButton}" Height="30"
+                                                    FontSize="12" Click="CfgRefreshMusic_Click"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsTitlebar}"/>
+
+                                        <TextBlock Text="{DynamicResource SettingsTitlebarStyle}" Foreground="#FFB0B0B4" FontSize="12" Margin="0,0,0,8"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                            <RadioButton x:Name="CfgLogo0" Content="{DynamicResource OptLogoNone}" Style="{StaticResource SettingsRadioButton}"/>
+                                            <RadioButton x:Name="CfgLogo1" Content="{DynamicResource OptLogoDefault}" Style="{StaticResource SettingsRadioButton}" IsChecked="True"/>
+                                            <RadioButton x:Name="CfgLogo2" Content="{DynamicResource OptLogoVanilla}" Style="{StaticResource SettingsRadioButton}"/>
+                                            <RadioButton x:Name="CfgLogo3" Content="{DynamicResource OptCustom}" Style="{StaticResource SettingsRadioButton}"/>
+                                        </StackPanel>
+
+                                        <CheckBox x:Name="CfgEnableAnimation" Content="{DynamicResource SettingsEnableAnimation}" Style="{StaticResource SettingsCheckBox}" Margin="0,0,0,10" IsChecked="True"/>
+
+                                        <Grid Margin="0,0,0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="60"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsAnimationSpeed}"/>
+                                            <Slider x:Name="CfgAnimationSpeed" Grid.Column="1" Minimum="50" Maximum="200"
+                                                    Value="100" Style="{StaticResource SettingsSlider}"
+                                                    ValueChanged="CfgPersonalization_Changed"/>
+                                            <TextBlock x:Name="CfgAnimationSpeedLabel" Grid.Column="2" Text="100%"
+                                                       Foreground="#FFB0B0B4" FontSize="12" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- 联机设置 -->
+                        <ScrollViewer x:Name="SettingsTabLink" Style="{StaticResource CustomScrollBar}"
+                                      VerticalScrollBarVisibility="Visible"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      PreviewMouseWheel="SmoothScroll_PreviewMouseWheel" Visibility="Collapsed">
+                            <StackPanel Margin="18,14">
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsLink}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsLinkMode}"/>
+                                            <ComboBox x:Name="CfgLinkLatencyMode" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource OptLinkP2P}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptLinkRelay}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptLinkDirectOnly}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptLinkRelayOnly}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsLinkPort}"/>
+                                            <TextBox x:Name="CfgLinkPort" Grid.Column="1" Style="{StaticResource SettingsTextBox}" Text="25565"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsLinkMaxPlayers}"/>
+                                            <Slider x:Name="CfgLinkMaxPlayers" Grid.Column="1" Minimum="2" Maximum="64"
+                                                    Value="8" Style="{StaticResource SettingsSlider}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsNetworkOpt}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="60"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsHeartbeat}"/>
+                                            <Slider x:Name="CfgLinkHeartbeat" Grid.Column="1" Minimum="1" Maximum="30"
+                                                    Value="5" Style="{StaticResource SettingsSlider}"/>
+                                            <TextBlock x:Name="CfgLinkHeartbeatLabel" Grid.Column="2" Text="5s"
+                                                       Foreground="#FFB0B0B4" FontSize="12" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="60"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsTimeout}"/>
+                                            <Slider x:Name="CfgLinkTimeout" Grid.Column="1" Minimum="5" Maximum="120"
+                                                    Value="30" Style="{StaticResource SettingsSlider}"/>
+                                            <TextBlock x:Name="CfgLinkTimeoutLabel" Grid.Column="2" Text="30s"
+                                                       Foreground="#FFB0B0B4" FontSize="12" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                        <StackPanel Margin="0,4,0,0">
+                                            <CheckBox x:Name="CfgLinkUpnp" Content="{DynamicResource SettingsUpnp}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                            <CheckBox x:Name="CfgLinkCompress" Content="{DynamicResource SettingsCompress}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                            <CheckBox x:Name="CfgLinkEncrypt" Content="{DynamicResource SettingsEncrypt}" Style="{StaticResource SettingsCheckBox}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsLinkAdvanced}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsCustomPeer}"/>
+                                            <TextBox x:Name="CfgLinkCustomPeer" Grid.Column="1" Style="{StaticResource SettingsTextBox}"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsRelayServer}"/>
+                                            <ComboBox x:Name="CfgLinkRelayServer" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource OptRelayAuto}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptRelayCNEast}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptRelayCNSouth}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptRelayHK}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptRelaySingapore}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptRelayTokyo}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptRelayLA}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptRelayFrankfurt}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsMtu}"/>
+                                            <ComboBox x:Name="CfgLinkMtu" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="1">
+                                                <ComboBoxItem Content="512"/>
+                                                <ComboBoxItem Content="1024"/>
+                                                <ComboBoxItem Content="1400"/>
+                                                <ComboBoxItem Content="1500"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsRoomSettings}"/>
+
+                                        <StackPanel Margin="0,4,0,0">
+                                            <CheckBox x:Name="CfgLinkAllowSpectator" Content="{DynamicResource SettingsAllowSpectator}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                            <CheckBox x:Name="CfgLinkWhitelist" Content="{DynamicResource SettingsWhitelist}" Style="{StaticResource SettingsCheckBox}"/>
+                                            <CheckBox x:Name="CfgLinkAutoKick" Content="{DynamicResource SettingsAutoKick}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                            <CheckBox x:Name="CfgLinkShowPing" Content="{DynamicResource SettingsShowPing}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- 其他设置 -->
+                        <ScrollViewer x:Name="SettingsTabSystem" Style="{StaticResource CustomScrollBar}"
+                                      VerticalScrollBarVisibility="Visible"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      PreviewMouseWheel="SmoothScroll_PreviewMouseWheel" Visibility="Collapsed">
+                            <StackPanel Margin="18,14">
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsDownload}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsDownloadSource}"/>
+                                            <ComboBox x:Name="CfgDownloadSource" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="1">
+                                                <ComboBoxItem Content="{DynamicResource OptSourceMirror}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptSourceOfficialFallback}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptSourceOfficial}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsVersionListSource}"/>
+                                            <ComboBox x:Name="CfgVersionListSource" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="1">
+                                                <ComboBoxItem Content="{DynamicResource OptSourceMirror}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptSourceOfficialFallback}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptSourceOfficial}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="60"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsMaxThreads}"/>
+                                            <Slider x:Name="CfgMaxThreads" Grid.Column="1" Minimum="1" Maximum="255"
+                                                    Value="63" Style="{StaticResource SettingsSlider}"/>
+                                            <TextBlock x:Name="CfgMaxThreadsLabel" Grid.Column="2" Text="63"
+                                                       Foreground="#FFB0B0B4" FontSize="12" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="80"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsSpeedLimit}"/>
+                                            <Slider x:Name="CfgSpeedLimit" Grid.Column="1" Minimum="1" Maximum="42"
+                                                    Value="42" Style="{StaticResource SettingsSlider}"/>
+                                            <TextBlock x:Name="CfgSpeedLimitLabel" Grid.Column="2" Text="{DynamicResource OptSpeedUnlimited}"
+                                                       Foreground="#FFB0B0B4" FontSize="12" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                        <CheckBox x:Name="CfgVerifySsl" Content="{DynamicResource SettingsVerifySsl}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsCommunityResources}"/>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsSource}"/>
+                                            <ComboBox x:Name="CfgModSource" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="2">
+                                                <ComboBoxItem Content="{DynamicResource OptSourceMirror}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptSourceOfficialFallback2}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptSourceOfficial}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsFileNameFormat}"/>
+                                            <ComboBox x:Name="CfgModNameFormat" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="1">
+                                                <ComboBoxItem Content="{DynamicResource OptModName1}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptModName2}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptModName3}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptModName4}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptModName5}"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <Grid Margin="0,0,0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource SettingsModManageStyle}"/>
+                                            <ComboBox x:Name="CfgModLocalNameStyle" Grid.Column="1" Style="{StaticResource SettingsComboBox}" SelectedIndex="0">
+                                                <ComboBoxItem Content="{DynamicResource OptModStyle1}"/>
+                                                <ComboBoxItem Content="{DynamicResource OptModStyle2}"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsAccessibility}"/>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                            <TextBlock Text="{DynamicResource SettingsGameUpdateHint}" Style="{StaticResource SettingsItemLabel}" Margin="0,0,16,0"/>
+                                            <CheckBox x:Name="CfgUpdateRelease" Content="{DynamicResource SettingsUpdateRelease}" Style="{StaticResource SettingsCheckBox}" Margin="0,0,16,0" IsChecked="True"/>
+                                            <CheckBox x:Name="CfgUpdateSnapshot" Content="{DynamicResource SettingsUpdateSnapshot}" Style="{StaticResource SettingsCheckBox}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                            <TextBlock Text="{DynamicResource SettingsGameLanguage}" Style="{StaticResource SettingsItemLabel}" Margin="0,0,16,0"/>
+                                            <CheckBox x:Name="CfgAutoChinese" Content="{DynamicResource SettingsAutoChinese}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                        </StackPanel>
+
+                                        <CheckBox x:Name="CfgAutoCheckUpdate" Content="{DynamicResource SettingsAutoCheckUpdate}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsVersionDisplay}"/>
+
+                                        <CheckBox x:Name="CfgShowSnapshot" Content="{DynamicResource SettingsShowSnapshot}" Style="{StaticResource SettingsCheckBox}" IsChecked="True"/>
+                                        <CheckBox x:Name="CfgShowOldBeta" Content="{DynamicResource SettingsShowOldBeta}" Style="{StaticResource SettingsCheckBox}"/>
+                                        <CheckBox x:Name="CfgShowAprilFool" Content="{DynamicResource SettingsShowAprilFool}" Style="{StaticResource SettingsCheckBox}"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsCard}">
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource SettingsConfigFile}"/>
+
+                                        <TextBlock x:Name="CfgPathLabel" Foreground="#FFB0B0B4" FontSize="11" Margin="0,0,0,10" TextWrapping="Wrap"/>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <Button Content="{DynamicResource SettingsOpenConfig}" Style="{StaticResource CardButton}" Height="30"
+                                                    FontSize="12" Margin="0,0,10,0" Click="CfgOpenConfigFile_Click"/>
+                                            <Button Content="{DynamicResource SettingsResetAll}" Style="{StaticResource CardButton}" Height="30"
+                                                    FontSize="12" Click="CfgResetAll_Click"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- 其他页面 -->
+            <Grid x:Name="MorePage" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="MorePageSlide"/>
+                </Grid.RenderTransform>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Height="44" Background="#FF1F1F23" CornerRadius="8,8,0,0">
+                    <Grid Margin="16,0">
+                        <TextBlock Text="{DynamicResource PageMore}" Foreground="White" FontSize="14"
+                                   FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Background="#FF252529" Margin="0,1,0,0" ClipToBounds="True">
+                    <ScrollViewer Style="{StaticResource CustomScrollBar}"
+                                  VerticalScrollBarVisibility="Visible"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  PreviewMouseWheel="SmoothScroll_PreviewMouseWheel">
+                        <StackPanel Margin="18,14">
+
+                            <Border Style="{StaticResource SettingsCard}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource MoreAbout}"/>
+
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource MoreLauncherName}"/>
+                                        <TextBlock Grid.Column="1" Text="DIL" Foreground="White" FontSize="12"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource MoreVersion}"/>
+                                        <TextBlock x:Name="MoreVersionText" Grid.Column="1" Text="1.0.0" Foreground="White"
+                                                   FontSize="12" VerticalAlignment="Center"/>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource MoreRuntime}"/>
+                                        <TextBlock x:Name="MoreRuntimeText" Grid.Column="1" Foreground="White"
+                                                   FontSize="12" VerticalAlignment="Center"/>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Style="{StaticResource SettingsItemLabel}" Text="{DynamicResource MoreProjectUrl}"/>
+                                        <TextBlock Grid.Column="1" Text="github.com/aaa112222/DynamicIsland-Launcher" Foreground="#FF4A90F5"
+                                                   FontSize="12" VerticalAlignment="Center" Cursor="Hand"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource SettingsCard}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource MoreQuickActions}"/>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Button Content="{DynamicResource MoreOpenGameDir}" Style="{StaticResource CardButton}" Height="30"
+                                                FontSize="12" Margin="0,0,10,0" Click="MoreOpenGameDir_Click"/>
+                                        <Button Content="{DynamicResource MoreOpenJavaDir}" Style="{StaticResource CardButton}" Height="30"
+                                                FontSize="12" Margin="0,0,10,0" Click="MoreOpenJavaDir_Click"/>
+                                        <Button Content="{DynamicResource MoreClearCache}" Style="{StaticResource CardButton}" Height="30"
+                                                FontSize="12" Margin="0,0,10,0" Click="MoreClearCache_Click"/>
+                                        <Button x:Name="MoreCheckUpdateBtn" Content="{DynamicResource MoreCheckUpdate}" Style="{StaticResource CardButton}" Height="30"
+                                                FontSize="12" Click="MoreCheckUpdate_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource SettingsCard}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource MoreChangelog}"/>
+
+                                    <TextBlock Foreground="#FFB0B0B4" FontSize="12" TextWrapping="Wrap" LineHeight="22"
+                                               Text="{DynamicResource ChangelogContent}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource SettingsCard}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SettingsCardTitle}" Text="{DynamicResource MoreCredits}"/>
+
+                                    <TextBlock Foreground="#FFB0B0B4" FontSize="12" TextWrapping="Wrap" LineHeight="22"
+                                               Text="{DynamicResource CreditsContent}"/>
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>

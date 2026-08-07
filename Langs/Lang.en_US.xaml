@@ -1,0 +1,454 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!-- Navigation -->
+    <sys:String x:Key="NavLaunch">Launch</sys:String>
+    <sys:String x:Key="NavDownload">Download</sys:String>
+    <sys:String x:Key="NavSettings">Settings</sys:String>
+    <sys:String x:Key="NavMore">More</sys:String>
+    <sys:String x:Key="NavExit">Exit</sys:String>
+    <sys:String x:Key="NavCollapse">Collapse</sys:String>
+
+    <!-- Page Titles -->
+    <sys:String x:Key="PageLaunch">Launch</sys:String>
+    <sys:String x:Key="PageDownload">Download</sys:String>
+    <sys:String x:Key="PageDownloadCenter">Download Center</sys:String>
+    <sys:String x:Key="PageSettings">Settings</sys:String>
+    <sys:String x:Key="PageMore">More</sys:String>
+
+    <!-- Launch Page -->
+    <sys:String x:Key="LaunchPlayer">Player</sys:String>
+    <sys:String x:Key="LaunchMemory">Memory</sys:String>
+    <sys:String x:Key="LaunchNoVersionSelected">No version selected</sys:String>
+    <sys:String x:Key="LaunchStart">Launch</sys:String>
+
+    <!-- Download Page -->
+    <sys:String x:Key="DownloadSearch">Search</sys:String>
+    <sys:String x:Key="DownloadTarget">Target Version</sys:String>
+    <sys:String x:Key="DownloadNotSelected">Not selected</sys:String>
+    <sys:String x:Key="DownloadStart">Start Download</sys:String>
+    <sys:String x:Key="DownloadManagement">Version Management</sys:String>
+
+    <!-- Resource Types -->
+    <sys:String x:Key="ResTypeGame">Game</sys:String>
+    <sys:String x:Key="ResTypeMod">Mod</sys:String>
+    <sys:String x:Key="ResTypeShader">Shader</sys:String>
+    <sys:String x:Key="ResTypeMaterial">Resource Pack</sys:String>
+
+    <!-- Version Categories -->
+    <sys:String x:Key="CatAll">All</sys:String>
+    <sys:String x:Key="CatRelease">Release</sys:String>
+    <sys:String x:Key="CatSnapshot">Snapshot</sys:String>
+    <sys:String x:Key="CatOld">Old Beta</sys:String>
+    <sys:String x:Key="CatAprilFool">April Fool</sys:String>
+
+    <!-- Download Status/Progress -->
+    <sys:String x:Key="DlVersionManifest">Fetching version manifest</sys:String>
+    <sys:String x:Key="DlCancelled">Download cancelled</sys:String>
+    <sys:String x:Key="DlDownloading">Downloading {0}</sys:String>
+    <sys:String x:Key="DlDownloadingFile">Downloading file</sys:String>
+    <sys:String x:Key="DlComplete">Download complete</sys:String>
+    <sys:String x:Key="DlFailed">Download failed: {0}</sys:String>
+    <sys:String x:Key="DlClient">Downloading client</sys:String>
+    <sys:String x:Key="DlClientProgress">Downloading client {0:F1} MB / {1:F1} MB</sys:String>
+    <sys:String x:Key="DlLibraries">Downloading libraries</sys:String>
+    <sys:String x:Key="DlLibrariesProgress">Downloading libraries {0}/{1}</sys:String>
+    <sys:String x:Key="DlLibrariesProgressFailed">Downloading libraries {0}/{1} ({2} failed)</sys:String>
+    <sys:String x:Key="DlAssets">Downloading assets</sys:String>
+    <sys:String x:Key="DlAssetsProgress">Downloading assets {0}/{1}</sys:String>
+    <sys:String x:Key="DlAssetsProgressFailed">Downloading assets {0}/{1} ({2} failed)</sys:String>
+    <sys:String x:Key="DlModLoader">Downloading {0}</sys:String>
+    <sys:String x:Key="DlLoaderInstalled">{0} installed</sys:String>
+    <sys:String x:Key="DlBaseVersionExists">Base version exists: {0}</sys:String>
+    <sys:String x:Key="DlRetrying">Retrying {0} failed files</sys:String>
+    <sys:String x:Key="DlForgeInstalling">Installing {0}</sys:String>
+    <sys:String x:Key="DlForgePreDownload">Pre-downloading Forge libraries {0}/{1}</sys:String>
+    <sys:String x:Key="DlForgeRuntimeLibs">Downloading Forge runtime libs {0}/{1}</sys:String>
+    <sys:String x:Key="DlForgeRuntimeLibsFailed">Downloading Forge runtime libs {0}/{1} ({2} failed)</sys:String>
+    <sys:String x:Key="DlStatusDownloading">Downloading</sys:String>
+    <sys:String x:Key="DlStatusCompleted">Completed</sys:String>
+    <sys:String x:Key="DlStatusFailed">Failed</sys:String>
+    <sys:String x:Key="DlStatusCancelled">Cancelled</sys:String>
+
+    <!-- Errors -->
+    <sys:String x:Key="ErrVersionNotFound">Version not found: {0}</sys:String>
+    <sys:String x:Key="ErrNoClientUrl">Client download URL not found</sys:String>
+    <sys:String x:Key="ErrNoJava">Java runtime not found, please install Java first</sys:String>
+    <sys:String x:Key="ErrLibrariesFailed">Library download failed, {0} files could not be downloaded</sys:String>
+    <sys:String x:Key="ErrAssetsFailed">Asset download failed, {0} files could not be downloaded</sys:String>
+    <sys:String x:Key="ErrLoaderNotFound">No {0} loader found for version {1}</sys:String>
+    <sys:String x:Key="ErrLoaderDownloadFail">{0} download failed, tried {1} mirrors, last error: {2}</sys:String>
+    <sys:String x:Key="ErrInstallerFail">{0} installer failed with exit code {1}, details: {2}</sys:String>
+    <sys:String x:Key="ErrInstallerNoOutput">Installer produced no output</sys:String>
+    <sys:String x:Key="ErrNoDownloadableFile">No downloadable file found</sys:String>
+    <sys:String x:Key="ErrNoFile">File does not exist</sys:String>
+    <sys:String x:Key="ErrLogTitle">==== Error Log {0} ====</sys:String>
+    <sys:String x:Key="ErrLogVersion">Version: {0}</sys:String>
+    <sys:String x:Key="ErrLogPlayer">Player: {0}</sys:String>
+    <sys:String x:Key="ErrLogMaxRam">Max RAM: {0} MB</sys:String>
+    <sys:String x:Key="ErrLogForceCheck">Force check: {0}</sys:String>
+    <sys:String x:Key="ErrLogGameDir">Game directory: {0}</sys:String>
+    <sys:String x:Key="ErrLogExceptionType">Exception type: {0}</sys:String>
+    <sys:String x:Key="ErrLogExceptionMsg">Exception message: {0}</sys:String>
+    <sys:String x:Key="ErrLogInnerExceptionType">Inner exception type: {0}</sys:String>
+    <sys:String x:Key="ErrLogInnerExceptionMsg">Inner exception message: {0}</sys:String>
+    <sys:String x:Key="ErrLogStackTrace">Stack trace:</sys:String>
+    <sys:String x:Key="ErrLogInnerStackTrace">Inner exception stack:</sys:String>
+
+    <!-- Launch Logs -->
+    <sys:String x:Key="LogAlreadyLaunching">Already launching, please wait</sys:String>
+    <sys:String x:Key="LogLaunchVersion">Launch version: {0}</sys:String>
+    <sys:String x:Key="LogPlayer">Player: {0}</sys:String>
+    <sys:String x:Key="LogMaxRam">Max RAM: {0} MB</sys:String>
+    <sys:String x:Key="LogForceCheck">Force check files: {0}</sys:String>
+    <sys:String x:Key="LogIsolationDir">Isolation directory: {0}</sys:String>
+    <sys:String x:Key="LogBaseJarCheckFail">Base jar check failed: {0}</sys:String>
+    <sys:String x:Key="LogVerifyFile">Verifying file: {0}</sys:String>
+    <sys:String x:Key="LogDownloadFile">Downloading file: {0}</sys:String>
+    <sys:String x:Key="LogPatchRetry">Attempt {0}/{1} to patch files</sys:String>
+    <sys:String x:Key="LogNetworkRetry">Network error, retry {0}: {1}</sys:String>
+    <sys:String x:Key="LogSkipFileCheckNote">File check skipped, launching directly</sys:String>
+    <sys:String x:Key="LogQuickBuildFail">Quick build failed, switching to full check: {0}</sys:String>
+    <sys:String x:Key="LogProcessExitCode">Process exit code: {0}</sys:String>
+    <sys:String x:Key="LogProcessImmediateExit">Process exited immediately</sys:String>
+    <sys:String x:Key="LogGameOutput">Game output (last {0} lines):&#x0A;{1}</sys:String>
+    <sys:String x:Key="LogLaunchSuccess">Launch successful, process ID: {0}</sys:String>
+    <sys:String x:Key="LogLaunchFail">Launch failed: {0}</sys:String>
+    <sys:String x:Key="LogStack">Stack: {0}</sys:String>
+    <sys:String x:Key="LogSkinSteve">Using Steve skin</sys:String>
+    <sys:String x:Key="LogSkinAlex">Using Alex skin</sys:String>
+    <sys:String x:Key="LogSkinPremium">Using premium skin: {0}</sys:String>
+    <sys:String x:Key="LogGotPremiumUuid">Got premium UUID: {0}</sys:String>
+    <sys:String x:Key="LogPremiumUuidFail">Failed to get premium UUID, using offline UUID</sys:String>
+    <sys:String x:Key="LogSkinSetupFail">Skin setup failed: {0}</sys:String>
+
+    <!-- Launch Progress -->
+    <sys:String x:Key="ProgressInit">Initializing</sys:String>
+    <sys:String x:Key="ProgressInitMsg">Initializing launch environment</sys:String>
+    <sys:String x:Key="ProgressCheckDeps">Checking Dependencies</sys:String>
+    <sys:String x:Key="ProgressCheckDepsMsg">Checking game dependencies</sys:String>
+    <sys:String x:Key="ProgressCheckFiles">Checking Files</sys:String>
+    <sys:String x:Key="ProgressCheckFilesMsg">Checking game file integrity</sys:String>
+    <sys:String x:Key="ProgressPatchFiles">Patching Files</sys:String>
+    <sys:String x:Key="ProgressPatchFilesMsg">Patching missing files</sys:String>
+    <sys:String x:Key="ProgressBuildProcess">Building Process</sys:String>
+    <sys:String x:Key="ProgressBuildProcessMsg">Building launch process</sys:String>
+    <sys:String x:Key="ProgressSkipCheckMsg">Skipping file check, quick launch</sys:String>
+    <sys:String x:Key="ProgressLaunching">Launching</sys:String>
+    <sys:String x:Key="ProgressLaunchingMsg">Launching game</sys:String>
+    <sys:String x:Key="ProgressVerifying">Verifying</sys:String>
+    <sys:String x:Key="ProgressVerifyingMsg">Verifying game process</sys:String>
+    <sys:String x:Key="ProgressDone">Done</sys:String>
+    <sys:String x:Key="ProgressDoneMsg">Launch complete</sys:String>
+
+    <!-- Messages -->
+    <sys:String x:Key="MsgUpdateFound">New version found: {0}</sys:String>
+    <sys:String x:Key="MsgAlreadyLatest">Already up to date</sys:String>
+    <sys:String x:Key="MsgCheckUpdateFailed">Update check failed</sys:String>
+    <sys:String x:Key="MsgCacheCleared">Cache cleared</sys:String>
+    <sys:String x:Key="MsgClearCacheFailed">Failed to clear cache</sys:String>
+    <sys:String x:Key="MsgBackgroundRefreshed">Background refreshed</sys:String>
+    <sys:String x:Key="MsgMusicRefreshed">Music refreshed</sys:String>
+    <sys:String x:Key="MsgEnterPlayerName">Please enter a player name</sys:String>
+    <sys:String x:Key="MsgInvalidRam">Invalid memory size</sys:String>
+    <sys:String x:Key="MsgSelectVersion">Please select a version first</sys:String>
+    <sys:String x:Key="MsgNoRuntimeDir">Runtime directory does not exist</sys:String>
+    <sys:String x:Key="MsgOpenDirFailed">Failed to open directory</sys:String>
+    <sys:String x:Key="MsgOpenConfigFailed">Failed to open config file</sys:String>
+    <sys:String x:Key="MsgSettingsReset">Settings have been reset</sys:String>
+
+    <!-- More Page -->
+    <sys:String x:Key="MoreAbout">About</sys:String>
+    <sys:String x:Key="MoreLauncherName">Launcher Name</sys:String>
+    <sys:String x:Key="MoreVersion">Version</sys:String>
+    <sys:String x:Key="MoreRuntime">Runtime</sys:String>
+    <sys:String x:Key="MoreCheckUpdate">Check for Updates</sys:String>
+    <sys:String x:Key="MoreClearCache">Clear Cache</sys:String>
+    <sys:String x:Key="MoreOpenGameDir">Open Game Directory</sys:String>
+    <sys:String x:Key="MoreOpenJavaDir">Open Java Directory</sys:String>
+    <sys:String x:Key="MoreProjectUrl">Project URL</sys:String>
+    <sys:String x:Key="MoreQuickActions">Quick Actions</sys:String>
+    <sys:String x:Key="MoreChangelog">Changelog</sys:String>
+    <sys:String x:Key="MoreCredits">Credits</sys:String>
+    <sys:String x:Key="ChangelogContent">- Optimized launch performance&#x0A;- Fixed version settings panel&#x0A;- Improved download retry mechanism&#x0A;- Multi-loader support</sys:String>
+    <sys:String x:Key="CreditsContent">Thanks to all open source projects</sys:String>
+
+    <!-- Common -->
+    <sys:String x:Key="CommonRefresh">Refresh</sys:String>
+    <sys:String x:Key="CommonOpenFolder">Open Folder</sys:String>
+    <sys:String x:Key="CommonDoubleClick">Double-click to open settings</sys:String>
+
+    <!-- Mirrors -->
+    <sys:String x:Key="MirrorOfficialName">Official</sys:String>
+    <sys:String x:Key="MirrorOfficialDesc">Mojang official server</sys:String>
+    <sys:String x:Key="MirrorGithubName">GitHub</sys:String>
+    <sys:String x:Key="MirrorGithubDesc">GitHub mirror</sys:String>
+    <sys:String x:Key="MirrorCustomName">Custom</sys:String>
+    <sys:String x:Key="MirrorCustomDesc">Custom download source</sys:String>
+
+    <!-- Resources -->
+    <sys:String x:Key="ResLoadingRecommend">Loading recommendations</sys:String>
+    <sys:String x:Key="ResSearching">Searching</sys:String>
+    <sys:String x:Key="ResLoadFailed">Load failed: {0}</sys:String>
+    <sys:String x:Key="ResNoRecommend">No recommendations</sys:String>
+    <sys:String x:Key="ResNoResult">No results found for "{0}"</sys:String>
+    <sys:String x:Key="ResNoDesc">No description</sys:String>
+    <sys:String x:Key="ResTypeRelease">Release</sys:String>
+    <sys:String x:Key="ResTypeSnapshot">Snapshot</sys:String>
+    <sys:String x:Key="ResVersionCount">{0} versions</sys:String>
+    <sys:String x:Key="ResLoaderAny">Any</sys:String>
+    <sys:String x:Key="ResMissingJar">Missing jar file</sys:String>
+    <sys:String x:Key="ResSpeedUnlimited">Unlimited</sys:String>
+    <sys:String x:Key="ResSpeedValue">{0} KB/s</sys:String>
+
+    <!-- Version Settings -->
+    <sys:String x:Key="VerSettingsTitle">Version Settings</sys:String>
+    <sys:String x:Key="VerSettingsBack">Back</sys:String>
+    <sys:String x:Key="VerSettingsDisplayName">Display Name</sys:String>
+    <sys:String x:Key="VerSettingsMemory">Memory Allocation</sys:String>
+    <sys:String x:Key="VerSettingsMemGlobal">Follow Global</sys:String>
+    <sys:String x:Key="VerSettingsMemCustom">Custom</sys:String>
+    <sys:String x:Key="VerSettingsJvmArgs">JVM Arguments</sys:String>
+    <sys:String x:Key="VerSettingsJvmArgsHint">Leave empty to use global settings</sys:String>
+    <sys:String x:Key="VerSettingsGameArgs">Game Arguments</sys:String>
+    <sys:String x:Key="VerSettingsGameArgsHint">Additional game launch arguments</sys:String>
+    <sys:String x:Key="VerSettingsOpenFolder">Open Version Folder</sys:String>
+    <sys:String x:Key="VerSettingsOpenFolderFail">Failed to open folder</sys:String>
+    <sys:String x:Key="VerSettingsMods">Mod Management</sys:String>
+    <sys:String x:Key="VerSettingsModsHint">Drop .jar files to install mods</sys:String>
+    <sys:String x:Key="VerSettingsModsDrop">Drop .jar files here to install</sys:String>
+    <sys:String x:Key="VerSettingsModInstalled">Mod installed: {0}</sys:String>
+    <sys:String x:Key="VerSettingsModRemoved">Mod removed: {0}</sys:String>
+    <sys:String x:Key="VerSettingsSave">Save</sys:String>
+    <sys:String x:Key="VerSettingsSaved">Settings saved</sys:String>
+
+    <!-- Settings - Basic -->
+    <sys:String x:Key="SettingsBasic">Basic</sys:String>
+    <sys:String x:Key="SettingsOpacity">Opacity</sys:String>
+    <sys:String x:Key="SettingsHue">Hue</sys:String>
+    <sys:String x:Key="SettingsSaturation">Saturation</sys:String>
+    <sys:String x:Key="SettingsLightness">Lightness</sys:String>
+    <sys:String x:Key="SettingsHueDelta">Hue Delta</sys:String>
+    <sys:String x:Key="SettingsTheme">Theme</sys:String>
+    <sys:String x:Key="SettingsLanguage">Language</sys:String>
+    <sys:String x:Key="SettingsShowLogo">Show Logo</sys:String>
+    <sys:String x:Key="SettingsAutoSave">Auto-save settings</sys:String>
+
+    <!-- Settings - Launch Options -->
+    <sys:String x:Key="SettingsLaunchOptions">Launch Options</sys:String>
+    <sys:String x:Key="SettingsVersionIsolation">Version Isolation</sys:String>
+    <sys:String x:Key="SettingsWindowTitle">Window Title</sys:String>
+    <sys:String x:Key="SettingsCustomInfo">Custom Info</sys:String>
+    <sys:String x:Key="SettingsLauncherVisibility">Launcher Visibility</sys:String>
+    <sys:String x:Key="SettingsProcessPriority">Process Priority</sys:String>
+    <sys:String x:Key="SettingsWindowSize">Window Size</sys:String>
+
+    <!-- Settings - Memory -->
+    <sys:String x:Key="SettingsMemoryAllocation">Memory Allocation</sys:String>
+    <sys:String x:Key="SettingsOptimizeMemory">Optimize memory allocation</sys:String>
+
+    <!-- Settings - Skin -->
+    <sys:String x:Key="SettingsSkin">Skin</sys:String>
+
+    <!-- Settings - Advanced -->
+    <sys:String x:Key="SettingsAdvanced">Advanced</sys:String>
+    <sys:String x:Key="SettingsJavaArgs">Java Arguments</sys:String>
+    <sys:String x:Key="SettingsGameArgs">Game Arguments</sys:String>
+    <sys:String x:Key="SettingsPreLaunch">Pre-launch Command</sys:String>
+    <sys:String x:Key="SettingsWaitPreLaunch">Wait for pre-launch command</sys:String>
+    <sys:String x:Key="SettingsGcType">Garbage Collector</sys:String>
+    <sys:String x:Key="SettingsDisableJlw">Disable Java Launcher Wrapper</sys:String>
+    <sys:String x:Key="SettingsDisableLua">Disable Lua Scripts</sys:String>
+    <sys:String x:Key="SettingsHighPerfGpu">Use High Performance GPU</sys:String>
+
+    <!-- Settings - Background -->
+    <sys:String x:Key="SettingsBackground">Background</sys:String>
+    <sys:String x:Key="SettingsBackgroundFit">Background Fit</sys:String>
+    <sys:String x:Key="SettingsBackgroundBlur">Background Blur</sys:String>
+    <sys:String x:Key="SettingsColorfulBackground">Colorful Background</sys:String>
+    <sys:String x:Key="SettingsRefreshBackground">Refresh Background</sys:String>
+
+    <!-- Settings - Music -->
+    <sys:String x:Key="SettingsMusic">Music</sys:String>
+    <sys:String x:Key="SettingsMusicVolume">Music Volume</sys:String>
+    <sys:String x:Key="SettingsMusicRandom">Random Playback</sys:String>
+    <sys:String x:Key="SettingsMusicAuto">Auto Play</sys:String>
+    <sys:String x:Key="SettingsMusicStart">Play on Launch</sys:String>
+    <sys:String x:Key="SettingsMusicStop">Stop on Game Start</sys:String>
+    <sys:String x:Key="SettingsRefreshMusic">Refresh Music</sys:String>
+
+    <!-- Settings - Titlebar -->
+    <sys:String x:Key="SettingsTitlebar">Titlebar</sys:String>
+    <sys:String x:Key="SettingsTitlebarStyle">Titlebar Style</sys:String>
+    <sys:String x:Key="SettingsEnableAnimation">Enable Animation</sys:String>
+    <sys:String x:Key="SettingsAnimationSpeed">Animation Speed</sys:String>
+
+    <!-- Settings - Link -->
+    <sys:String x:Key="SettingsLink">Link</sys:String>
+    <sys:String x:Key="SettingsLinkMode">Link Mode</sys:String>
+    <sys:String x:Key="SettingsLinkPort">Port</sys:String>
+    <sys:String x:Key="SettingsLinkMaxPlayers">Max Players</sys:String>
+    <sys:String x:Key="SettingsLinkAdvanced">Advanced Link Settings</sys:String>
+    <sys:String x:Key="SettingsCustomPeer">Custom Peer</sys:String>
+    <sys:String x:Key="SettingsRoomSettings">Room Settings</sys:String>
+    <sys:String x:Key="SettingsWhitelist">Whitelist</sys:String>
+    <sys:String x:Key="SettingsAllowSpectator">Allow Spectator</sys:String>
+    <sys:String x:Key="SettingsAutoKick">Auto Kick</sys:String>
+
+    <!-- Settings - Network -->
+    <sys:String x:Key="SettingsNetworkOpt">Network Optimization</sys:String>
+    <sys:String x:Key="SettingsHeartbeat">Heartbeat</sys:String>
+    <sys:String x:Key="SettingsTimeout">Timeout</sys:String>
+    <sys:String x:Key="SettingsUpnp">Enable UPnP</sys:String>
+    <sys:String x:Key="SettingsCompress">Enable Compression</sys:String>
+    <sys:String x:Key="SettingsEncrypt">Enable Encryption</sys:String>
+    <sys:String x:Key="SettingsMtu">MTU</sys:String>
+    <sys:String x:Key="SettingsRelayServer">Relay Server</sys:String>
+
+    <!-- Settings - Download -->
+    <sys:String x:Key="SettingsDownload">Download</sys:String>
+    <sys:String x:Key="SettingsDownloadSource">Download Source</sys:String>
+    <sys:String x:Key="SettingsSource">Source</sys:String>
+    <sys:String x:Key="SettingsSpeedLimit">Speed Limit</sys:String>
+    <sys:String x:Key="SettingsMaxThreads">Max Threads</sys:String>
+    <sys:String x:Key="SettingsVerifySsl">Verify SSL Certificate</sys:String>
+    <sys:String x:Key="SettingsVersionListSource">Version List Source</sys:String>
+    <sys:String x:Key="SettingsVersionDisplay">Version Display</sys:String>
+    <sys:String x:Key="SettingsShowSnapshot">Show Snapshots</sys:String>
+    <sys:String x:Key="SettingsShowOldBeta">Show Old Beta</sys:String>
+    <sys:String x:Key="SettingsAutoChinese">Auto Chinese</sys:String>
+    <sys:String x:Key="SettingsGameLanguage">Game Language</sys:String>
+    <sys:String x:Key="SettingsGameUpdateHint">Game Update Notification</sys:String>
+    <sys:String x:Key="SettingsUpdateRelease">Update Release</sys:String>
+    <sys:String x:Key="SettingsUpdateSnapshot">Update Snapshot</sys:String>
+    <sys:String x:Key="SettingsAutoCheckUpdate">Auto Check for Updates</sys:String>
+    <sys:String x:Key="SettingsFileNameFormat">File Name Format</sys:String>
+    <sys:String x:Key="SettingsModManageStyle">Mod Management Style</sys:String>
+    <sys:String x:Key="SettingsCommunityResources">Community Resources</sys:String>
+    <sys:String x:Key="SettingsShowPing">Show Ping</sys:String>
+    <sys:String x:Key="SettingsShowAprilFool">April Fools Easter Egg</sys:String>
+    <sys:String x:Key="SettingsAccessibility">Accessibility</sys:String>
+    <sys:String x:Key="SettingsOpenConfig">Open Config File</sys:String>
+    <sys:String x:Key="SettingsConfigFile">Config File</sys:String>
+    <sys:String x:Key="SettingsResetAll">Reset All Settings</sys:String>
+
+    <!-- Options - Common -->
+    <sys:String x:Key="OptAuto">Auto</sys:String>
+    <sys:String x:Key="OptCustom">Custom</sys:String>
+    <sys:String x:Key="OptOff">Off</sys:String>
+    <sys:String x:Key="OptRandom">Random</sys:String>
+
+    <!-- Options - Background Fit -->
+    <sys:String x:Key="OptFitAuto">Auto</sys:String>
+    <sys:String x:Key="OptFitCenter">Center</sys:String>
+    <sys:String x:Key="OptFitCenterRatio">Center (Ratio)</sys:String>
+    <sys:String x:Key="OptFitStretch">Stretch</sys:String>
+    <sys:String x:Key="OptFitTile">Tile</sys:String>
+
+    <!-- Options - GC -->
+    <sys:String x:Key="OptGcNone">Default</sys:String>
+    <sys:String x:Key="OptGcG1gc">G1GC</sys:String>
+    <sys:String x:Key="OptGcTunedG1gc">Tuned G1GC</sys:String>
+    <sys:String x:Key="OptGcZgc">ZGC</sys:String>
+    <sys:String x:Key="OptGcGenZgc">Generational ZGC</sys:String>
+
+    <!-- Options - Isolation -->
+    <sys:String x:Key="OptIsolationAll">All</sys:String>
+    <sys:String x:Key="OptIsolationNonRelease">Non-release</sys:String>
+    <sys:String x:Key="OptIsolationModded">Modded</sys:String>
+    <sys:String x:Key="OptIsolationModdedNonRelease">Modded &amp; Non-release</sys:String>
+
+    <!-- Options - Link Mode -->
+    <sys:String x:Key="OptLinkDirectOnly">Direct Only</sys:String>
+    <sys:String x:Key="OptLinkP2P">P2P</sys:String>
+    <sys:String x:Key="OptLinkRelay">Relay</sys:String>
+    <sys:String x:Key="OptLinkRelayOnly">Relay Only</sys:String>
+
+    <!-- Options - Logo -->
+    <sys:String x:Key="OptLogoDefault">Default</sys:String>
+    <sys:String x:Key="OptLogoNone">None</sys:String>
+    <sys:String x:Key="OptLogoVanilla">Vanilla</sys:String>
+
+    <!-- Options - Mod Style -->
+    <sys:String x:Key="OptModName1">Style 1</sys:String>
+    <sys:String x:Key="OptModName2">Style 2</sys:String>
+    <sys:String x:Key="OptModName3">Style 3</sys:String>
+    <sys:String x:Key="OptModName4">Style 4</sys:String>
+    <sys:String x:Key="OptModName5">Style 5</sys:String>
+    <sys:String x:Key="OptModStyle1">Simple</sys:String>
+    <sys:String x:Key="OptModStyle2">Card</sys:String>
+
+    <!-- Options - Priority -->
+    <sys:String x:Key="OptPriorityHigh">High</sys:String>
+    <sys:String x:Key="OptPriorityMedium">Medium</sys:String>
+    <sys:String x:Key="OptPriorityLow">Low</sys:String>
+
+    <!-- Options - Relay -->
+    <sys:String x:Key="OptRelayAuto">Auto</sys:String>
+    <sys:String x:Key="OptRelayCNEast">China East</sys:String>
+    <sys:String x:Key="OptRelayCNSouth">China South</sys:String>
+    <sys:String x:Key="OptRelayHK">Hong Kong</sys:String>
+    <sys:String x:Key="OptRelayTokyo">Tokyo</sys:String>
+    <sys:String x:Key="OptRelaySingapore">Singapore</sys:String>
+    <sys:String x:Key="OptRelayFrankfurt">Frankfurt</sys:String>
+    <sys:String x:Key="OptRelayLA">Los Angeles</sys:String>
+
+    <!-- Options - Skin -->
+    <sys:String x:Key="OptSkinPlayerName">Player Name Skin</sys:String>
+    <sys:String x:Key="OptSkinPremium">Premium Skin</sys:String>
+
+    <!-- Options - Source -->
+    <sys:String x:Key="OptSourceOfficial">Official</sys:String>
+    <sys:String x:Key="OptSourceMirror">Mirror</sys:String>
+    <sys:String x:Key="OptSourceOfficialFallback">Official (Mirror Fallback)</sys:String>
+    <sys:String x:Key="OptSourceOfficialFallback2">Official (Dual Mirror Fallback)</sys:String>
+
+    <!-- Options - Speed -->
+    <sys:String x:Key="OptSpeedUnlimited">Unlimited</sys:String>
+
+    <!-- Options - Visibility -->
+    <sys:String x:Key="OptVisClose">Close Launcher</sys:String>
+    <sys:String x:Key="OptVisHideClose">Hide and Close</sys:String>
+    <sys:String x:Key="OptVisHideReopen">Hide and Reopen on Exit</sys:String>
+    <sys:String x:Key="OptVisKeep">Keep Visible</sys:String>
+    <sys:String x:Key="OptVisMinimize">Minimize</sys:String>
+
+    <!-- Options - Window Size -->
+    <sys:String x:Key="OptWindowCustom">Custom</sys:String>
+    <sys:String x:Key="OptWindowDefault">Default</sys:String>
+    <sys:String x:Key="OptWindowFullscreen">Fullscreen</sys:String>
+    <sys:String x:Key="OptWindowLauncherSize">Launcher Size</sys:String>
+    <sys:String x:Key="OptWindowMaximize">Maximize</sys:String>
+
+    <!-- Settings Tabs -->
+    <sys:String x:Key="SettingsTabLaunch">Launch Options</sys:String>
+    <sys:String x:Key="SettingsTabUI">Appearance</sys:String>
+    <sys:String x:Key="SettingsTabLink">Multiplayer</sys:String>
+    <sys:String x:Key="SettingsTabSystem">System</sys:String>
+
+    <!-- Launch Status -->
+    <sys:String x:Key="LaunchLaunching">Launching...</sys:String>
+    <sys:String x:Key="LaunchSuccess">Launch Success</sys:String>
+    <sys:String x:Key="LaunchFailed">Launch Failed</sys:String>
+
+    <!-- Common Buttons -->
+    <sys:String x:Key="CommonCancel">Cancel</sys:String>
+
+    <!-- More Page -->
+    <sys:String x:Key="MoreChecking">Checking...</sys:String>
+
+    <!-- Status Text -->
+    <sys:String x:Key="StatusLoading">Loading...</sys:String>
+    <sys:String x:Key="StatusLoadingVersionList">Loading version list</sys:String>
+    <sys:String x:Key="StatusNoAvailableVersion">No available version</sys:String>
+    <sys:String x:Key="StatusNoInstalledVersion">No installed version</sys:String>
+    <sys:String x:Key="StatusNoDownloadTask">No download task</sys:String>
+    <sys:String x:Key="StatusNoVersionInCategory">No version in this category</sys:String>
+    <sys:String x:Key="StatusClickDownloadStart">Click to start download</sys:String>
+    <sys:String x:Key="StatusSelectDownloadUrl">Select download source</sys:String>
+    <sys:String x:Key="StatusCustomMirrorHint">Enter custom mirror URL</sys:String>
+
+    <!-- Version Settings - Additional -->
+    <sys:String x:Key="VerSettingsModsCount">{0} mods installed</sys:String>
+    <sys:String x:Key="VerSettingsDeleteVersion">Delete Version</sys:String>
+    <sys:String x:Key="VerSettingsDeleteConfirm">Are you sure you want to delete this version? This action cannot be undone.</sys:String>
+    <sys:String x:Key="VerSettingsDeleted">Version deleted</sys:String>
+</ResourceDictionary>
